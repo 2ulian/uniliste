@@ -1,25 +1,8 @@
-<script setup>
-import { ref } from "vue";
-import { invoke } from "@tauri-apps/api/core";
-
-const greetMsg = ref("");
-const name = ref("");
-
-async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  greetMsg.value = await invoke("greet", { name: name.value });
-}
-</script>
-
 <template>
   <main class="login-page">
     <div class="login-container">
       <input
-        v-model="username"
-        type="text"
-        placeholder="Identifiant"
-        class="input-field"
-    />
+        v-model="username" type="text" placeholder="Identifiant" class="input-field"/>
 
       <input
         v-model="password"
@@ -32,13 +15,29 @@ async function greet() {
         <a href="#" class="forgot-password-link">Forgot password ?</a>
       </div>
 
-      <button class="login-button">
+      <button @click="verification"  href="FirstPage.vue" class="login-button">
         Se connecter
       </button>
+      <p>{{ msg }}</p>
     </div>
   </main>
 </template>
 
+<script setup>
+import { ref } from "vue";
+const username = ref('')
+const password = ref('')
+const msg = ref('')
+
+const verification = () => {
+  if (username.value && password.value) {
+    msg.value = "Connexion réussie"
+
+  } else {
+    msg.value = "Veuillez remplir tous les champs"
+  }
+}
+</script>
 <style scoped>
 .login-page {
   display: flex;
