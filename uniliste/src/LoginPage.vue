@@ -12,10 +12,10 @@
       />
 
       <div class="forgot-password">
-        <a href="#" class="forgot-password-link">Forgot password ?</a>
+        <a href="#" class="forgot-password-link">Mot de passe oublié ?</a>
       </div>
 
-      <button @click="verification"  href="FirstPage.vue" class="login-button">
+      <button @click="verification" class="login-button">
         Se connecter
       </button>
       <p>{{ msg }}</p>
@@ -25,13 +25,17 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 const username = ref('')
 const password = ref('')
 const msg = ref('')
+const router = useRouter()
 
 const verification = () => {
-  if (username.value && password.value) {
+  if (username.value == 'azerty' && password.value == '0000') {
     msg.value = "Connexion réussie"
+    router.push("/first")
 
   } else {
     msg.value = "Veuillez remplir tous les champs"
