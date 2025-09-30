@@ -11,17 +11,22 @@
 </div>
 <div class="content">
     <div class="EmploiDuTemps">
-        <h1>Emploi du temps</h1>
+        <h1 id="titre_emploie_du_temps">Emploi du temps</h1>
+        <img src="../src\assets\vue.svg" alt="emploi du temps" id="logo_edt" />
     </div>
-    <div class="Remarques">
-        <h2>Remarques</h2>
-        <textarea name="remarques" id="remarques"></textarea>
+    <div class="Informations_supplementaires">
+      <div id="Remarques">
+          <h2>Remarques</h2>
+          <textarea name="remarques" id="remarques"></textarea>
+      </div>
+
+      <div id="Absences">
+          <h2>Absences</h2>
+          <textarea name="absences" id="absences"></textarea>
+      </div>
+
     </div>
 
-    <div class="Absences">
-        <h2>Absences</h2>
-        <textarea name="absences" id="absences"></textarea>
-    </div>
 
 </div>
 
@@ -54,11 +59,36 @@ li {
   display: inline;
   padding: 0 10px;
 }
-.Remarques, .Absences {
+.Informations_supplementaires {
+  display: inline;
+  float: center;
   color: #791919;
+}
+
+#remarques, #absences {
+  width: 300px;
+  height: 200px;
+  background-color: lightgray;
+}
+
+.EmploiDuTemps {
   float: left;
+  color: #791919;
+  margin: 20px;
+  margin-top: 100px;
+  height: 400px;
+  width: 600px;
+  background-color: lightgray;
+}
+
+#titre_emploie_du_temps {
+  text-align: center;
+}
+#logo_edt {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   width: 200px;
-  height: 100px;
-  gap : 20px;
+  height: 200px;
 }
 </style>
