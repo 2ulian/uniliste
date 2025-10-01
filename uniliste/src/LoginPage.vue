@@ -41,6 +41,7 @@ const verification = () => {
     msg.value = "Veuillez remplir tous les champs"
   }
 }
+
 </script>
 <style scoped>
 .login-page {
