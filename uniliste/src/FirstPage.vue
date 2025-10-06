@@ -1,12 +1,10 @@
 <template>
   <div class="navbar">
-    <img src="../src/assets/vue.svg" alt="Logo" class="logo" />
-    <ul class="nav-links">
-      <li @click="home">retourner au menu</li>
-      <li>liste des eleves</li>
-      <li>ajouter un eleve</li>
-      <li>supprimer un eleve</li>
-      <li>modifier un eleve</li>
+    <img src="../src\assets\unilim.png" alt="Logo" class="logo" />
+    <ul>
+      <router-link to="/groups" id="nav-links">Groupes</router-link>
+      <router-link to="/cours" id="nav-links">Cours</router-link>
+      <router-link to="/ressources" id="nav-links">Ressources</router-link>
     </ul>
   </div>
 
@@ -17,174 +15,103 @@
     </div>
 
     <div class="Informations_supplementaires">
-      <div id="selection_groupe">
-        <h2>Selection Groupe</h2>
-        <select v-model="selectedGroup">
-          <option v-for="g in groupes" :key="g" :value="g">{{ g }}</option>
-        </select>
-      </div>
-
-      <div id="Appel_non_fait">
-        <h2>Appels non faits</h2>
-        <textarea v-model="appelNonFait"></textarea>
-        <button @click="sendCallNotRealised">Envoyer</button>
-        <p>{{ messageCallNotRealise }}</p>
-      </div>
-
       <div id="Commentaires">
         <h2>Remarques</h2>
         <textarea v-model="commentaire"></textarea>
-        <button @click="sendComments">Envoyer</button>
-        <p>{{ messageComment }}</p>
+        <div id="ligne">
+          <button @click="sendComments" class="Send-button">Envoyer</button>
+          <p>{{ commentMessage }}</p>
+        </div>
+
       </div>
 
       <div id="Absences">
         <h2>Absences</h2>
         <textarea v-model="absence"></textarea>
-        <button @click="sendAbsence">Envoyer</button>
-        <p>{{ absenceMessage }}</p>
+        <div id="ligne">
+          <button @click="sendAbsence" class="Send-button">Envoyer</button>
+          <p>{{ absenceMessage }}</p>
+        </div>
+
       </div>
 
       <div id="Mesures_Disciplinaire">
         <h2>Mesures Disciplinaire</h2>
         <textarea v-model="disciplinary"></textarea>
-        <button @click="sendDisciplinary">Envoyer</button>
-        <p>{{ disciplinaryMessage }}</p>
+        <div id="ligne">
+          <button @click="sendDisciplinary" class="Send-button">Envoyer</button>
+          <p>{{ disciplinaryMessage }}</p>
+        </div>
       </div>
+    </div>
+    <div class="Appel_non_fait">
+      <h2>Appels non faits</h2>
+      <area></area>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { ref } from "vue";
-  import { useRouter } from "vue-router";
+import { ref } from "vue";
 
-  const router = useRouter();
+const selectedGroup = ref("G1A");
 
-  const selectedGroup = ref("G1A");
-  const groupes = ["G1A", "G1B", "G2A", "G2B", "G3A", "G3B", "G4A", "G4B", "G5A", "G5B", "G6A", "G6B", "G7A", "G7B"];
+const commentaire = ref("");
+const commentMessage = ref("");
 
-  const CallNotRealise = ref("");
-  const messageCallNotRealise = ref("");
+const absence = ref("");
+const absenceMessage = ref("");
 
-  const commentaire = ref("");
-  const messageComment = ref("");
+const disciplinary = ref("");
+const disciplinaryMessage = ref("");
 
-  const absence = ref("");
-  const absenceMessage = ref("");
+const sendComments = () => {
+  commentaire.value = "";
+  commentMessage.value = "Envoyé !";
+  setTimeout(() => {
+    commentMessage.value = "";
+  }, 500);
+};
 
-  const disciplinary = ref("");
-  const disciplinaryMessage = ref("");
+const sendAbsence = () => {
+  absence.value = "";
+  absenceMessage.value = "Envoyé !";
+  setTimeout(() => {
+    absenceMessage.value = "";
+  }, 500);
+};
 
-  const home = () => {
-    router.push("/");
-  };
-
-  const sendCallNotRealised = () => {
-    CallNotRealise.value = "";
-    messageCallNotRealise.value = "Envoyé !";
-  };
-
-  const sendComments = () => {
-    commentaire.value = "";
-    messageComment.value = "Envoyé !";
-  };
-
-  const sendAbsence = () => {
-    absence.value = "";
-    absenceMessage.value = "Envoyé !";
-  };
-
-  const sendDisciplinary = () => {
-    disciplinary.value = "";
-    disciplinary.value = "Envoyé !";
-  };
+const sendDisciplinary = () => {
+  disciplinary.value = "";
+  disciplinaryMessage.value = "Envoyé !";
+  setTimeout(() => {
+    disciplinaryMessage.value = "";
+  }, 500);
+};
 </script>
 
 <style>
+.logo {
+  width: 70px;
+  border-radius: 10px;
+  margin: 10px;
+}
+
 .navbar {
   display: flex;
-  gap: 20px;
   align-items: center;
   background-color: #791919;
-  padding: 10px;
+  border: 0.5vmin solid #05060f;
+  box-shadow: 0.4rem 0.4rem #05060f;
+  overflow: hidden;
+  color: black;
 }
-li {
-  list-style: none;
+
+#nav-links {
   color: white;
+  padding: 20px;
+  text-decoration: none;
   font-weight: bold;
-  display: inline;
-  padding: 0 10px;
-  cursor: pointer;
-}
-
-.Informations_supplementaires {
-  display: inline;
-  float: right;
-  color: #791919;
-}
-
-#commentaires, #absences {
-  width: 300px;
-  height: 150px;
-}
-
-#mesures_disciplinaires {
-  width: 300px;
-  height: 80px;
-}
-
-.Info_centre {
-  display: inline;
-  float: center; 
-  color: #791919;
-  margin-top: 20px;
-}
-
-#appel_non_fait {
-  width: 300px;
-  height: 80px;
-}
-
-.EmploiDuTemps {
-  float: left;
-  color: #791919;
-  margin: 20px;
-  margin-top: 100px;
-  height: 400px;
-  width: 600px;
-}
-
-#titre_emploie_du_temps {
-  text-align: center;
-}
-#logo_edt {
-  display: block;
-  margin-left: auto; 
-  margin-right: auto;
-  width: 550px;
-  height: 500px;
-}
-
-textarea {
-  width: 100%;
-
-  height: 80px;
-  background-color: #fff5f5;   
-  border-radius: 8px;         
-  border: 1px solid #e0b3b3;   
-  padding: 8px;
-  margin-bottom: 5px;
-  resize: none;                
-  box-sizing: border-box;      
-}
-
-#commentaires, #absences {
-  height: 150px;
-}
-#mesures_disciplinaires,
-#appel_non_fait {
-  height: 80px; 
 }
 
 .content {
@@ -193,16 +120,77 @@ textarea {
   gap: 30px;
 }
 
-button {
+.EmploiDuTemps {
+  text-align: center;
+  float: left;
+  color: #791919;
+  margin: 20px;
+  margin-top: 5px;
+  width: 600px;
+}
+
+#logo_edt {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 550px;
+  height: 450px;
+}
+
+.Informations_supplementaires {
+  display: inline;
+  float: right;
+  color: #791919;
+}
+
+#commentaires,
+#absences {
+  height: 150px;
+}
+
+#mesures_disciplinaires {
+  height: 80px;
+}
+
+#ligne {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+textarea {
+  width: 100%;
+  height: 80px;
+  background-color: #fff5f5;
+  border-radius: 8px;
+  border: 1px solid #e0b3b3;
+  padding: 8px;
+  margin-bottom: 5px;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.Send-button {
   background: #791919;
   color: white;
   border: none;
   border-radius: 6px;
   padding: 6px 12px;
   cursor: pointer;
-  transition: background 0.2s;
+  border: 2px solid #05060f;
+  box-shadow: 0.2rem 0.2rem #05060f;
+  overflow: hidden;
 }
-button:hover {
-  background: #5a1313;
+
+.Appel_non_fait {
+  float: right;
+  margin: 20px;
+  padding: 10px;
+  color: #791919;
+  background-color: #fff5f5;
+  border: solid #e0b3b3;
+  border-radius: 1rem;
+  width: 500px;
+  height: 400px;
 }
 </style>
