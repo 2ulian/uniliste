@@ -5,13 +5,14 @@
             <router-link to="/first" id="nav-links">Menu</router-link>
             <router-link to="/cours" id="nav-links">Cours</router-link>
             <router-link to="/ressources" id="nav-links">Ressources</router-link>
+            <router-link to="/about" id="nav-links">A Propos</router-link>
         </ul>
     </div>
     <div class="content">
         <div class="selection_group">
             <div class="content_selection_group">
                 <p>choisir les groupes des A1</p>
-                <ul >
+                <ul>
                     <router-link class="selection">G1A</router-link>
                     <router-link class="selection">G1B</router-link>
                     <router-link class="selection">G2A</router-link>
@@ -64,6 +65,7 @@ const home = () => {
 
 .navbar {
     display: flex;
+    align-items: center;
     background-color: #791919;
     border: 0.5vmin solid #05060f;
     box-shadow: 0.4rem 0.4rem #05060f;
@@ -72,8 +74,8 @@ const home = () => {
 }
 
 #nav-links {
-    margin: 20px;
     color: white;
+    padding: 20px;
     text-decoration: none;
     font-weight: bold;
 }

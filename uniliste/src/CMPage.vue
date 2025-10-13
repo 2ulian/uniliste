@@ -1,31 +1,24 @@
 <template>
-    <div class="navbar">
+    <head class="navbar">
         <img src="../src\assets\unilim.png" alt="Logo" class="logo" />
         <ul>
             <router-link to="/first" id="nav-links">Menu</router-link>
             <router-link to="/groups" id="nav-links">Groupes</router-link>
             <router-link to="/ressources" id="nav-links">Ressources</router-link>
+            <router-link to="/cours" id="nav-links">Cours</router-link>
             <router-link to="/about" id="nav-links">A Propos</router-link>
         </ul>
-    </div>
-    <div class="content">
-        <div class="selection_cours">
-            <div class="content_selection_cours">
-                <router-link to="/CM" id="cours-links">CM</router-link>
-            </div>
+    </head>
+    <body>
+        <div>
+            <p>choisir promo</p>
+            <ul>
+                <router-link class="selection">A1</router-link>
+                <router-link class="selection">A2</router-link>
+                <router-link class="selection">A3</router-link>
+            </ul>
         </div>
-        <div class="selection_cours">
-            <div class="content_selection_cours">
-                <router-link to="/TD" id="cours-links">TD</router-link>
-            </div>
-        </div>
-        <div class="selection_cours">
-            <div class="content_selection_cours">
-                <router-link to="/TP" id="cours-links">TP</router-link>
-            </div>
-        </div>
-    </div>
-
+    </body>
 </template>
 
 <script setup>

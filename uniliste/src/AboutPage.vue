@@ -5,7 +5,6 @@
             <router-link to="/first" id="nav-links">Menu</router-link>
             <router-link to="/groups" id="nav-links">Groupes</router-link>
             <router-link to="/ressources" id="nav-links">Ressources</router-link>
-            <router-link to="/about" id="nav-links">A Propos</router-link>
         </ul>
     </div>
     <div class="content">
@@ -39,28 +38,27 @@ const home = () => {
 </script>
 <style scoped>
 .logo {
-    width: 70px;
-    border-radius: 10px;
-    margin: 10px;
+  width: 70px;
+  border-radius: 10px;
+  margin: 10px;
 }
 
 .navbar {
-    display: flex;
-    align-items: center;
-    background-color: #791919;
-    border: 0.5vmin solid #05060f;
-    box-shadow: 0.4rem 0.4rem #05060f;
-    overflow: hidden;
-    color: black;
+  display: flex;
+  align-items: center;
+  background-color: #791919;
+  border: 0.5vmin solid #05060f;
+  box-shadow: 0.4rem 0.4rem #05060f;
+  overflow: hidden;
+  color: black;
 }
 
 #nav-links {
-    color: white;
-    padding: 20px;
-    text-decoration: none;
-    font-weight: bold;
+  color: white;
+  padding: 20px;
+  text-decoration: none;
+  font-weight: bold;
 }
-
 .content {
     min-height: 400px;
     display: flex;
@@ -69,7 +67,7 @@ const home = () => {
     gap: 100px;
 }
 
-#cours-links {
+#cours-links{
     margin: 20px;
     color: white;
     text-decoration: none;
