@@ -1,17 +1,21 @@
 <template>
-  <div class="navbar">
-    <img src="../src\assets\unilim.png" alt="Logo" class="logo" />
+  <head class="navbar">
+    <img src="../assets/unilim.png" alt="Logo" class="logo" />
     <ul>
-      <router-link to="/groups" id="nav-links">Groupes</router-link>
-      <router-link to="/cours" id="nav-links">Cours</router-link>
-      <router-link to="/ressources" id="nav-links">Ressources</router-link>
+      <router-link to="/annee" id="nav-links">Annee Universitaire</router-link>
+      <router-link to="/student" id="nav-links">Importer étudiant</router-link>
+      <router-link to="/ressources" id="nav-links">Importer groupes</router-link>
+      <router-link to="/ressources" id="nav-links">Importer ressources</router-link>
+      <router-link to="/ressources" id="nav-links">Importer professeur</router-link>
+      <router-link to="/ressources" id="nav-links">Saisir justificatif</router-link>
+      <router-link to="/about" id="nav-links">A Propos</router-link>
     </ul>
-  </div>
+  </head>
 
   <div class="content">
     <div class="EmploiDuTemps">
       <h1 id="titre_emploie_du_temps">Emploi du temps du {{ selectedGroup }}</h1>
-      <img src="../src/assets/edt.png" alt="emploi du temps" id="logo_edt" />
+      <img src="../assets/edt.png" alt="emploi du temps" id="logo_edt" />
     </div>
 
     <div class="Informations_supplementaires">
@@ -36,7 +40,7 @@
       </div>
 
       <div id="Mesures_Disciplinaire">
-        <h2>Mesures Disciplinaire</h2>
+        <h2>Mesures Disciplinaires</h2>
         <textarea v-model="disciplinary"></textarea>
         <div id="ligne">
           <button @click="sendDisciplinary" class="Send-button">Envoyer</button>
@@ -46,7 +50,9 @@
     </div>
     <div class="Appel_non_fait">
       <h2>Appels non faits</h2>
-      <area></area>
+      <area>
+
+      </area>
     </div>
   </div>
 </template>
@@ -88,6 +94,7 @@ const sendDisciplinary = () => {
     disciplinaryMessage.value = "";
   }, 500);
 };
+
 </script>
 
 <style>
@@ -188,7 +195,7 @@ textarea {
   padding: 10px;
   color: #791919;
   background-color: #fff5f5;
-  border: solid #e0b3b3;
+  border: 1px solid #e0b3b3;
   border-radius: 1rem;
   width: 500px;
   height: 400px;
