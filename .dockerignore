@@ -1,0 +1,27 @@
+# Ignorer les node_modules et caches PNPM
+**/node_modules
+**/.pnpm
+
+# Ignorer les fichiers et dossiers de build
+dist
+build
+target
+
+# Ignorer les fichiers système ou inutiles
+.git
+.gitignore
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dossiers Docker
+Docker
+
+# Autres caches potentiels
+.cache
+.tmp
