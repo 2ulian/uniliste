@@ -41,6 +41,9 @@ const verification = () => {
   else if  (username.value == 'admin' && password.value == 'admin') {
     router.push("/first")
   }
+  else if (username.value == 'prof' && password.value == 'prof') {
+    router.push("/prof")
+  }
   else {
     msg.value = "Veuillez remplir tous les champs"
   }
