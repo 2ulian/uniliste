@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
       <img src="../assets/unilim.png" alt="Logo" class="logo" />
       <ul>
@@ -12,9 +11,7 @@
       </ul>
     </nav>
 
-    <!-- ===== MAIN GRID ===== -->
     <main class="grid-container">
-      <!-- Ligne 1 -->
       <section class="grid-item">
         <h1>Bonjour &lt;Professeur&gt;</h1>
         <h2>Voici vos prochains cours</h2>
@@ -36,7 +33,6 @@
         <p>{{ commentMessage }}</p>
       </section>
 
-      <!-- Ligne 2 -->
       <section class="grid-item">
         <h2>Appels à faire</h2>
         <div class="info-box">
