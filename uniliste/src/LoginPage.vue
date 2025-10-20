@@ -70,13 +70,13 @@ const verification = () => {
   border: none;
   border-radius: 9999px; 
   padding: 12px 16px;
-  background-color: #f4f6ff; 
+  background-color: #fff5f5; 
   font-size: 14px;
   outline: none;
 }
 
 .input-field:focus {
-  box-shadow: 0 0 0 2px #d0d4f7;
+  box-shadow: 0 0 0 2px #ffdfdf;
 }
 
 .forgot-password {
