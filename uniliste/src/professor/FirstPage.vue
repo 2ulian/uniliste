@@ -1,4 +1,11 @@
 <template>
+  <!-- Importation de la font Plus Jakarta Sans-->
+  <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  </head>
+
   <div>
     <nav class="navbar">
       <img src="../assets/unilim.png" alt="Logo" class="logo" />
@@ -36,9 +43,9 @@
       <section class="grid-item">
         <h2>Appels à faire</h2>
         <div class="info-box">
-          <div class="info-item">TP — R3.02 — 10h30–12h30</div>
-          <div class="info-item">TD — R1.01 — 08h30–10h30</div>
-          <div class="info-item">CM — R2.01 — 13h30–15h00</div>
+          <div class="info-item">TP  R3.02  10h30–12h30</div>
+          <div class="info-item">TD  R1.01  08h30–10h30</div>
+          <div class="info-item">CM  R2.01  13h30–15h00</div>
         </div>
       </section>
 
@@ -76,6 +83,10 @@ const sendComment = () => {
 </script>
 
 <style>
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
 .logo {
   width: 60px;
   margin: 10px;
@@ -118,6 +129,8 @@ const sendComment = () => {
 }
 
 .info-box {
+  width: 400px;
+  height: 150px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -128,6 +141,8 @@ const sendComment = () => {
   border-radius: 15px;
   padding: 10px 15px;
   box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
+  font-size : 14px;
+  min-height: 19px; 
 }
 
 .large {
@@ -135,13 +150,20 @@ const sendComment = () => {
 }
 
 textarea {
-  width: 100%;
-  height: 100px;
-  border-radius: 10px;
-  background-color: #fff5f5;
-  border: 1px solid #e0b3b3;
-  padding: 10px;
+background-color: #fff5f5;
+  width : 400px;
+  height : 150px; 
+  border-radius: 15px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
   resize: none;
+  border: none;
+  font-family : inherit;
+}
+
+textarea::placeholder {
+  font-style: italic;
+  color: #791919;
 }
 
 button {
