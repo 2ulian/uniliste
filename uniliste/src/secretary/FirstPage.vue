@@ -4,20 +4,14 @@
     <ul>
       <router-link to="/annee" id="nav-links">Annee Universitaire</router-link>
       <router-link to="/student" id="nav-links">Importer étudiant</router-link>
-      <router-link to="/ressources" id="nav-links">Importer groupes</router-link>
+      <router-link to="/group" id="nav-links">Importer groupes</router-link>
       <router-link to="/ressources" id="nav-links">Importer ressources</router-link>
-      <router-link to="/ressources" id="nav-links">Importer professeur</router-link>
-      <router-link to="/ressources" id="nav-links">Saisir justificatif</router-link>
-      <router-link to="/about" id="nav-links">A Propos</router-link>
+      <router-link to="/professor" id="nav-links">Importer professeur</router-link>
+      <router-link to="/justification" id="nav-links">Saisir justificatif</router-link>
     </ul>
   </head>
 
   <div class="content">
-    <div class="EmploiDuTemps">
-      <h1 id="titre_emploie_du_temps">Emploi du temps du {{ selectedGroup }}</h1>
-      <img src="../assets/edt.png" alt="emploi du temps" id="logo_edt" />
-    </div>
-
     <div class="Informations_supplementaires">
       <div id="Commentaires">
         <h2>Remarques</h2>
@@ -48,8 +42,8 @@
         </div>
       </div>
     </div>
-    <div class="Appel_non_fait">
-      <h2>Appels non faits</h2>
+    <div class="Etudiants_absents">
+      <h2>Etudiants absents</h2>
       <area>
 
       </area>
@@ -97,9 +91,9 @@ const sendDisciplinary = () => {
 
 </script>
 
-<style>
+<style scoped>
 .logo {
-  width: 70px;
+  width: 50px;
   border-radius: 10px;
   margin: 10px;
 }
@@ -127,23 +121,6 @@ const sendDisciplinary = () => {
   gap: 30px;
 }
 
-.EmploiDuTemps {
-  text-align: center;
-  float: left;
-  color: #791919;
-  margin: 20px;
-  margin-top: 5px;
-  width: 600px;
-}
-
-#logo_edt {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 550px;
-  height: 450px;
-}
-
 .Informations_supplementaires {
   display: inline;
   float: right;
@@ -169,8 +146,7 @@ textarea {
   width: 100%;
   height: 80px;
   background-color: #fff5f5;
-  border-radius: 8px;
-  border: 1px solid #e0b3b3;
+  box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
   padding: 8px;
   margin-bottom: 5px;
   resize: none;
@@ -184,18 +160,17 @@ textarea {
   border-radius: 6px;
   padding: 6px 12px;
   cursor: pointer;
-  border: 2px solid #05060f;
-  box-shadow: 0.2rem 0.2rem #05060f;
+  box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
   overflow: hidden;
 }
 
-.Appel_non_fait {
+.Etudiants_absents {
   float: right;
   margin: 20px;
   padding: 10px;
   color: #791919;
   background-color: #fff5f5;
-  border: 1px solid #e0b3b3;
+  box-shadow: 0 4px 8px rgba(255, 157, 157, 0.3);
   border-radius: 1rem;
   width: 500px;
   height: 400px;

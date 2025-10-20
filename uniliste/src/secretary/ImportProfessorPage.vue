@@ -4,18 +4,17 @@
         <img src="../assets/unilim.png" alt="Logo" class="logo" />
         <ul>
             <router-link to="/first" id="nav-links">Menu</router-link>
-            <router-link to="/cours" id="nav-links">Importer étudiant</router-link>
-            <router-link to="/ressources" id="nav-links">Importer groupes</router-link>
+            <router-link to="/annee" id="nav-links">Annee Universitaire</router-link>
+            <router-link to="/student" id="nav-links">Importer étudiant</router-link>
+            <router-link to="/group" id="nav-links">Importer groupes</router-link>
             <router-link to="/ressources" id="nav-links">Importer ressources</router-link>
-            <router-link to="/ressources" id="nav-links">Importer professeur</router-link>
-            <router-link to="/ressources" id="nav-links">Saisir justificatif</router-link>
-            <router-link to="/about" id="nav-links">A Propos</router-link>
+            <router-link to="/justification" id="nav-links">Saisir justificatif</router-link>
         </ul>
     </head>
 
     <body>
         <div>
-            <p>importer un fichier</p>
+            <p>importer un fichier de professeur</p>
             <button @click="importation">Importer</button>
         </div>
     </body>
@@ -41,4 +40,27 @@ function importation() {
     });
 }
 </script>
-<style scoped></style>
+<style scoped>
+.logo {
+  width: 50px;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #791919;
+  border: 0.5vmin solid #05060f;
+  box-shadow: 0.4rem 0.4rem #05060f;
+  overflow: hidden;
+  color: black;
+}
+
+#nav-links {
+  color: white;
+  padding: 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+</style>

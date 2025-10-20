@@ -4,21 +4,41 @@
         <img src="../assets/unilim.png" alt="Logo" class="logo" />
         <ul>
             <router-link to="/first" id="nav-links">Menu</router-link>
+            <router-link to="/annee" id="nav-links">Annee Universitaire</router-link>
             <router-link to="/student" id="nav-links">Importer étudiant</router-link>
-            <router-link to="/group" id="nav-links">Importer groupes</router-link>
             <router-link to="/ressources" id="nav-links">Importer ressources</router-link>
             <router-link to="/professor" id="nav-links">Importer professeur</router-link>
-            <router-link to="/ressources" id="nav-links">Saisir justificatif</router-link>
+            <router-link to="/justification" id="nav-links">Saisir justificatif</router-link>
         </ul>
     </head>
 
     <body>
-        <p>annee universitaire</p>
+        <div>
+            <p>importer un fichier de groupes</p>
+            <button @click="importation">Importer</button>
+        </div>
     </body>
 </template>
 
 <script setup>
+import { ref } from "vue";
+function importation() {
+    var delimitation = ",";
+    var line = '\n';
+    var i = document.getElementById('file');
+    var table = document.getElementById('table');
 
+    if(!i){
+        return;
+    }
+    i.addEventListener('change', function(e){
+        if(file && file.length > 0  ){
+            return;
+        }
+       
+      
+    });
+}
 </script>
 <style scoped>
 .logo {
@@ -42,4 +62,5 @@
   padding: 20px;
   text-decoration: none;
   font-weight: bold;
-}</style>
+}
+</style>

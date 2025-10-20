@@ -3,9 +3,13 @@ import LoginPage from "../LoginPage.vue";
 
 import SecretaryFirstPage from "../secretary/FirstPage.vue";
 import YearPage from "../secretary/YearPage.vue";
-import ImportStudent from "../secretary/ImportStudent.vue";
-import ProfessorFirstPage from "../professor/FirstPage.vue";
+import ImportStudentPage from "../secretary/ImportStudentPage.vue";
+import ImportGroupPage from "../secretary/ImportGroupPage.vue";
+import ImportProfessorPage from "../secretary/ImportProfessorPage.vue";
+import ImportRessourcesPage from "../secretary/ImportRessourcesPage.vue";
+import JustificationPage from "../secretary/JustificationPage.vue";
 
+import ProfessorFirstPage from "../professor/FirstPage.vue";
 import GroupPage from "../GroupPage.vue";
 import CoursPage from "../CoursPage.vue";
 import CMPage from "../CMPage.vue";
@@ -18,9 +22,13 @@ const routes = [
 
   { path: "/first", component: SecretaryFirstPage },
   {path: "/annee", component: YearPage },
-  {path: "/student", component: ImportStudent },
-  {path: "/prof", component: ProfessorFirstPage },
+  {path: "/student", component: ImportStudentPage },
+  {path: "/group", component: ImportGroupPage },
+  {path: "/professor", component: ImportProfessorPage },
+  {path: "/ressources", component: ImportRessourcesPage },
+  {path: "/justification", component: JustificationPage },
 
+  {path: "/prof", component: ProfessorFirstPage },
   { path: "/groups", component: GroupPage },
   { path: "/cours", component: CoursPage },
   { path: "/ressources", component: RessourcePage },

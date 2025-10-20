@@ -33,12 +33,7 @@ const msg = ref('')
 const router = useRouter()
 
 const verification = () => {
-  if (username.value == 'azerty' && password.value == '0000') {
-    msg.value = "Connexion réussie"
-    router.push("/first")
-
-  } 
-  else if  (username.value == 'admin' && password.value == 'admin') {
+if  (username.value == 'admin' && password.value == 'admin') {
     router.push("/first")
   }
   else if (username.value == 'prof' && password.value == 'prof') {
