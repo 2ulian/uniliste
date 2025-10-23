@@ -2,15 +2,15 @@
      FICHIER CORRESPONDANT A L'AFFICHAGE DES ELEVES -->
 <template>
   <nav class="navbar">
-    <img src="../src/assets/unilim.png" alt="Logo" class="logo" />
-    <ul>
-      <li><router-link to="/first" id="nav-links">Menu</router-link></li>
-      <li><router-link to="/cours" id="nav-links">Cours</router-link></li>
-      <li><router-link to="/ressources" id="nav-links">Ressources</router-link></li>
-      <li><router-link to="/about" id="nav-links">A Propos</router-link></li>
-      <li><router-link to="/list" id="nav-links">Liste des eleves</router-link></li>
-    </ul>
-  </nav>
+      <img src="../assets/unilim.png" alt="Logo" class="logo" />
+      <ul>
+        <li><router-link to="/prof">retourner au menu</router-link></li>
+        <li><router-link to="/list">liste des eleves</router-link></li>
+        <li><router-link to="/ajouter-eleve">ajouter un eleve</router-link></li>
+        <li><router-link to="/supprimer-eleve">supprimer un eleve</router-link></li>
+        <li><router-link to="/modifier-eleve">modifier un eleve</router-link></li>
+      </ul>
+    </nav>
 
   <main class="student-list-container">
     <h1>Liste des élèves</h1>
@@ -129,11 +129,21 @@ const home = () => {
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: space-between; 
   background-color: #791919;
-  border: 0.5vmin solid #05060f;
-  box-shadow: 0.4rem 0.4rem #05060f;
+  
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); 
+  
   overflow: hidden;
-  color: black;
+  padding: 0 5%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.logo {
+  width: 60px;
+  height: auto; 
+  border-radius: 10px;
+  margin: 10px 0; 
 }
 
 .navbar ul {
@@ -143,12 +153,29 @@ const home = () => {
   margin: 0;
 }
 
-#nav-links {
+.navbar ul li a {
   color: white;
-  padding: 20px;
+  padding: 24px 18px; 
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
   display: block;
+  font-size: 15px;
+  
+  text-transform: capitalize; 
+  
+  border-bottom: 3px solid transparent; 
+  
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.navbar ul li a:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.navbar ul li a.router-link-exact-active {
+  color: #ffc2c2;
+  font-weight: 700;
+  border-bottom-color: #ffc2c2;
 }
 
 .student-list-container {
