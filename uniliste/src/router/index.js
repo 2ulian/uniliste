@@ -8,6 +8,7 @@ import ImportGroupPage from "../secretary/ImportGroupPage.vue";
 import ImportProfessorPage from "../secretary/ImportProfessorPage.vue";
 import ImportRessourcesPage from "../secretary/ImportRessourcesPage.vue";
 import JustificationPage from "../secretary/JustificationPage.vue";
+import ListPage from "../temp.vue";
 
 import ProfessorFirstPage from "../professor/FirstPage.vue";
 import GroupPage from "../GroupPage.vue";
@@ -33,7 +34,9 @@ const routes = [
   { path: "/cours", component: CoursPage },
   { path: "/ressources", component: RessourcePage },
   { path: "/about", component: AboutPage },
-  { path: "/CM", component: CMPage }
+  { path: "/CM", component: CMPage },
+  { path: "/list", component: ListPage }
+
 ];
 
 const router = createRouter({
