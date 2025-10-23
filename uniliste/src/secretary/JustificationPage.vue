@@ -14,8 +14,11 @@
 
     <main>
       <div id="student_abs">
-        <p>Importer un fichier de justification</p>
-        <input type="file" @change="importation" accept=".csv" />
+        <p>Importer un fichier justificatif :</p>
+        <button for="fileInput" class="custom-file-upload" @click="openExplorer">
+          📂 Choisir un fichier CSV
+        </button>
+        <input type="file" @change="importation" accept=".csv" hidden />
         <ul>
           <h2>Choisir l'étudiant absent</h2>
           <li v-for="(ligne, i) in liste" :key="i">{{ ligne }}</li>
@@ -29,11 +32,13 @@ export default {
   name: "JustificationImport",
   data() {
     return {
-      // Charger la liste depuis localStorage si elle existe
       liste: JSON.parse(localStorage.getItem("justificationList") || "[]")
     };
   },
   methods: {
+    openExplorer() {
+      this.$el.querySelector('input[type="file"]').click();
+    },
     importation(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -42,11 +47,7 @@ export default {
       reader.onload = (e) => {
         const contents = e.target.result;
         const lignes = contents.split(/\r?\n/).filter(l => l.trim() !== "");
-
-        // Remplacer la liste actuelle par le nouveau fichier CSV
         this.liste = lignes;
-
-        // Sauvegarder dans localStorage pour persistance entre pages
         localStorage.setItem("justificationList", JSON.stringify(this.liste));
       };
       reader.readAsText(file);
