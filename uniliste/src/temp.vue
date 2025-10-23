@@ -176,12 +176,12 @@ h1 {
 
 select {
   background-color: #fff5f5;
-  border-radius: 20px; /* Bords arrondis */
+  border-radius: 20px; 
   padding: 12px 18px;
   font-family: inherit;
   color: #791919;
   font-size: 14px;
-  min-width: 280px; /* Donne de l'espace */
+  min-width: 280px; 
   cursor: pointer;
   border: none;
 }
@@ -216,7 +216,7 @@ select:focus {
 
 .student-item {
   display: grid;
-  grid-template-columns: 2.5fr 1fr 1fr 1.5fr 1.5fr; /* 5 colonnes */
+  grid-template-columns: 2.5fr 1fr 1fr 1.5fr 1.5fr;
   gap: 15px;
   align-items: center;
   background-color: #fff5f5;
@@ -227,18 +227,15 @@ select:focus {
   font-size: 15px;
 }
 
-/* Nom de l'élève en gras */
 .student-item span:first-child {
   font-weight: 700;
 }
 
-/* Cellule des boutons */
 .actions-cell {
   display: flex;
   gap: 10px;
 }
 
-/* Style des boutons d'action */
 .btn-modify,
 .btn-delete {
   border: none;
@@ -252,11 +249,11 @@ select:focus {
 }
 
 .btn-modify {
-  background-color: #791919; /* Marron/Rouge Unilim */
+  background-color: #791919;
 }
 
 .btn-delete {
-  background-color: #D93030; /* Rouge vif pour supprimer */
+  background-color: #D93030;
 }
 
 .btn-modify:hover,
