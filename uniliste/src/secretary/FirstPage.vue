@@ -12,40 +12,12 @@
   </head>
 
   <div class="content">
-    <div class="Informations_supplementaires">
-      <div id="Commentaires">
-        <h2>Remarques</h2>
-        <textarea v-model="commentaire"></textarea>
-        <div id="ligne">
-          <button @click="sendComments" class="Send-button">Envoyer</button>
-          <p>{{ commentMessage }}</p>
-        </div>
-
-      </div>
-
-      <div id="Absences">
-        <h2>Absences</h2>
-        <textarea v-model="absence"></textarea>
-        <div id="ligne">
-          <button @click="sendAbsence" class="Send-button">Envoyer</button>
-          <p>{{ absenceMessage }}</p>
-        </div>
-
-      </div>
-
-      <div id="Mesures_Disciplinaire">
-        <h2>Mesures Disciplinaires</h2>
-        <textarea v-model="disciplinary"></textarea>
-        <div id="ligne">
-          <button @click="sendDisciplinary" class="Send-button">Envoyer</button>
-          <p>{{ disciplinaryMessage }}</p>
-        </div>
-      </div>
-    </div>
     <div class="Etudiants_absents">
       <h2>Etudiants absents</h2>
       <area>
-
+      <ul>
+        <li v-for="(ligne, i) in liste" :key="i">{{ ligne }}</li>
+      </ul>
       </area>
     </div>
   </div>
@@ -53,41 +25,7 @@
 
 <script setup>
 import { ref } from "vue";
-
-const selectedGroup = ref("G1A");
-
-const commentaire = ref("");
-const commentMessage = ref("");
-
-const absence = ref("");
-const absenceMessage = ref("");
-
-const disciplinary = ref("");
-const disciplinaryMessage = ref("");
-
-const sendComments = () => {
-  commentaire.value = "";
-  commentMessage.value = "Envoyé !";
-  setTimeout(() => {
-    commentMessage.value = "";
-  }, 500);
-};
-
-const sendAbsence = () => {
-  absence.value = "";
-  absenceMessage.value = "Envoyé !";
-  setTimeout(() => {
-    absenceMessage.value = "";
-  }, 500);
-};
-
-const sendDisciplinary = () => {
-  disciplinary.value = "";
-  disciplinaryMessage.value = "Envoyé !";
-  setTimeout(() => {
-    disciplinaryMessage.value = "";
-  }, 500);
-};
+const liste = ref(JSON.parse(localStorage.getItem("justificationList") || "[]"));
 
 </script>
 
@@ -121,49 +59,6 @@ const sendDisciplinary = () => {
   gap: 30px;
 }
 
-.Informations_supplementaires {
-  display: inline;
-  float: right;
-  color: #791919;
-}
-
-#commentaires,
-#absences {
-  height: 150px;
-}
-
-#mesures_disciplinaires {
-  height: 80px;
-}
-
-#ligne {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-textarea {
-  width: 100%;
-  height: 80px;
-  background-color: #fff5f5;
-  box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
-  padding: 8px;
-  margin-bottom: 5px;
-  resize: none;
-  box-sizing: border-box;
-}
-
-.Send-button {
-  background: #791919;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
-  overflow: hidden;
-}
-
 .Etudiants_absents {
   float: right;
   margin: 20px;
@@ -172,7 +67,7 @@ textarea {
   background-color: #fff5f5;
   box-shadow: 0 4px 8px rgba(255, 157, 157, 0.3);
   border-radius: 1rem;
-  width: 500px;
-  height: 400px;
+  width: 550px;
+  height: 500px;
 }
 </style>
