@@ -84,6 +84,7 @@ const allStudents = ref([
   { id: 4, name: 'DUBOIS Alice', promo: 'A3', group: 'G7-A', aménagement: 'Tiers-temps' },
   { id: 5, name: 'LEROY Tom', promo: 'A1', group: 'G1-B', aménagement: 'NON' },
   { id: 6, name: 'MOREAU Léa', promo: 'A2', group: 'G4-A', aménagement: 'NON' },
+  { id: 7, name: 'SHAKUR Tupac', promo: 'A3', group: 'G6-A', aménagement: 'NON' },
 ]);
 
 const filteredStudents = computed(() => {
@@ -120,10 +121,12 @@ const home = () => {
 </script>
 
 <style scoped>
+/* J'ai fusionné vos deux règles .logo en une seule */
 .logo {
-  width: 70px;
+  width: 60px;
+  height: auto; 
   border-radius: 10px;
-  margin: 10px;
+  margin: 10px 0; /* Maintient la hauteur de la navbar */
 }
 
 .navbar {
@@ -131,19 +134,12 @@ const home = () => {
   align-items: center;
   justify-content: space-between; 
   background-color: #791919;
-  
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); 
-  
   overflow: hidden;
-  padding: 0 5%;
   font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
-.logo {
-  width: 60px;
-  height: auto; 
-  border-radius: 10px;
-  margin: 10px 0; 
+  
+  padding: 0 5%; 
+  
+  box-shadow: 0 2px 8px rgba(86, 0, 0, 0.15);
 }
 
 .navbar ul {
@@ -153,6 +149,7 @@ const home = () => {
   margin: 0;
 }
 
+
 .navbar ul li a {
   color: white;
   padding: 24px 18px; 
@@ -160,22 +157,48 @@ const home = () => {
   font-weight: 600;
   display: block;
   font-size: 15px;
-  
   text-transform: capitalize; 
   
-  border-bottom: 3px solid transparent; 
+  position: relative;
   
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  
+  transition: color 0.3s ease; 
+}
+
+
+.navbar ul li a::after {
+  content: ''; 
+  position: absolute;
+  bottom: 18px; 
+  left: 50%; 
+  
+  width: 0; 
+  height: 3px; 
+  background: #ffc2c2; 
+  
+  
+  transform: translateX(-50%); 
+  
+  transition: width 0.3s ease-in-out;
 }
 
 .navbar ul li a:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  color: #ffc2c2;
+  background-color: transparent;
 }
+
+.navbar ul li a:hover::after {
+  width: 70%; 
+}
+
 
 .navbar ul li a.router-link-exact-active {
   color: #ffc2c2;
   font-weight: 700;
-  border-bottom-color: #ffc2c2;
+}
+
+.navbar ul li a.router-link-exact-active::after {
+  width: 70%; 
 }
 
 .student-list-container {
