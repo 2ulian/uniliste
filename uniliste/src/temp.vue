@@ -121,12 +121,11 @@ const home = () => {
 </script>
 
 <style scoped>
-/* J'ai fusionné vos deux règles .logo en une seule */
 .logo {
   width: 60px;
   height: auto; 
   border-radius: 10px;
-  margin: 10px 0; /* Maintient la hauteur de la navbar */
+  margin: 10px ;
 }
 
 .navbar {

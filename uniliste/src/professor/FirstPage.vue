@@ -8,6 +8,7 @@
         <li><router-link to="/ajouter-eleve">ajouter un eleve</router-link></li>
         <li><router-link to="/supprimer-eleve">supprimer un eleve</router-link></li>
         <li><router-link to="/modifier-eleve">modifier un eleve</router-link></li>
+        <li><router-link to="/">quitter</router-link></li>
       </ul>
     </nav>
 
@@ -86,9 +87,9 @@ body {
 /* --- STYLES NAVBAR MODERNISÉS --- */
 .logo {
   width: 60px;
-  height: auto;
+  height: auto; 
   border-radius: 10px;
-  margin: 10px 0; /* Marge verticale pour la hauteur de la navbar */
+  margin: 10px ;
 }
 
 .navbar {
