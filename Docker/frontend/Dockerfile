@@ -12,6 +12,6 @@ RUN pnpm install
 # Copier tout le code du frontend
 COPY ./uniliste .
 
-# Vite dev server
-EXPOSE 5173
-CMD ["pnpm", "dev", "--host"]
+# Vite dev server (port defined in vite.config.js)
+EXPOSE 1420
+CMD ["pnpm", "dev", "--host", "--port", "1420"]
