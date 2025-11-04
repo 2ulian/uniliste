@@ -1,15 +1,15 @@
 FROM node:20-alpine
 
-# Activer pnpm via corepack
+# Enable pnpm via corepack
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
-# Copier uniquement les fichiers de dépendances pour profiter du cache
+# Copy only dependency files to leverage cache
 COPY ./uniliste/package.json ./uniliste/pnpm-lock.yaml* ./
 RUN pnpm install
 
-# Copier tout le code du frontend
+# Copy all frontend code
 COPY ./uniliste .
 
 # Vite dev server (port defined in vite.config.js)
