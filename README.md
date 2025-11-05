@@ -10,7 +10,7 @@ Dockerized dev stack (Vite on 1420, Axum on 8000, Mongo on 27017):
 docker compose up --build
 ```
 
-Then open http://localhost:1420. Frontend calls backend through `/api` proxy to `http://backend:8000` (see `uniliste/vite.config.js`).
+Then open http://localhost:1420. Frontend calls backend through `/api` proxy to `http://backend:8000` (see `frontend/vite.config.js`).
 
 ## Notes
 
