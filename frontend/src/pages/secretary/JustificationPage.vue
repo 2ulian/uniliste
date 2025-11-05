@@ -9,189 +9,24 @@
       <li><router-link to="/ressources" id="nav-links">Importer ressources</router-link></li>
       <li><router-link to="/professor" id="nav-links">Importer professeur</router-link></li>
       <li><router-link to="/" id="nav-links">Quitter</router-link></li>
-    </ul>.logo {
-  width: 60px;
-  height: auto;
-  border-radius: 10px;
-  margin: 10px;
-}
-
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #791919;
-  overflow: hidden;
-  font-family: "Plus Jakarta Sans", sans-serif;
-
-  padding: 0 5%;
-
-  box-shadow: 0 2px 8px rgba(86, 0, 0, 0.15);
-}
-
-.navbar ul {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.navbar ul li a {
-  color: white;
-  padding: 24px 18px;
-  text-decoration: none;
-  font-weight: 600;
-  display: block;
-  font-size: 15px;
-  text-transform: capitalize;
-
-  position: relative;
-
-  transition: color 0.3s ease;
-}
-
-.navbar ul li a::after {
-  content: "";
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-
-  width: 0;
-  height: 3px;
-  background: #ffc2c2;
-
-  transform: translateX(-50%);
-
-  transition: width 0.3s ease-in-out;
-}
-
-.navbar ul li a:hover {
-  color: #ffc2c2;
-  background-color: transparent;
-}
-
-.navbar ul li a:hover::after {
-  width: 70%;
-}
-
-.navbar ul li a.router-link-exact-active {
-  color: #ffc2c2;
-  font-weight: 700;
-}
-
-.navbar ul li a.router-link-exact-active::after {
-  width: 70%;
-}
-
-.student-list-container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 40px auto;
-  color: #791919;
-  font-family: "Plus Jakarta Sans", sans-serif;
-}
-
-h1 {
-  text-align: center;
-  font-weight: 700;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
-
-.filters-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-select {
-  background-color: #fff5f5;
-  border-radius: 20px;
-  padding: 12px 18px;
-  font-family: inherit;
-  color: #791919;
-  font-size: 14px;
-  min-width: 280px;
-  cursor: pointer;
-  border: none;
-}
-
-select option[value=""] {
-  color: #a9a9a9;
-}
-
-select:focus {
-  background-color: #ffffff;
-  border-color: #ffd6d6;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 200, 200, 0.2);
-}
-
-.student-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.student-list-header {
-  display: grid;
-  grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
-  gap: 15px;
-  padding: 10px 20px;
-  font-weight: 700;
-  font-size: 14px;
-  color: #555;
-  border-bottom: 2px solid #ffdfdf;
-}
-
-.student-item {
-  display: grid;
-  grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
-  gap: 15px;
-  align-items: center;
-  background-color: #fff5f5;
-  border-radius: 15px;
-  padding: 15px 20px;
-  box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
-  font-weight: 500;
-  font-size: 15px;
-}
-
-.student
+    </ul>.
   </nav>
 
   <main class="student-list-container">
     <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;">
-      <h1>Élèves absents</h1>
+      <h1>Liste des élèves</h1>
       <div>
-        <button class="custom-file-upload btn-modify" @click="openExplorer" style="background:#791919; color:white;">
-          📂 Importer un fichier CSV 
+        <button
+          class="custom-file-upload btn-modify"
+          @click="openExplorer"
+          style="background:#791919; color:white;"
+        >
+          📂 Importer un fichier CSV
         </button>
         <input ref="fileInput" type="file" @change="onFileChange" accept=".csv" hidden />
       </div>
     </div>
 
-    <!-- FILTRES -->
-    <div class="filters-container">
-      <select v-model="selectedPromo">
-        <option value="" disabled>Sélectionner votre promotion</option>
-        <option v-for="promo in promos" :key="promo" :value="promo">{{ promo }}</option>
-      </select>
-
-      <select v-model="selectedTD">
-        <option value="" disabled>Sélectionner votre groupe de TD</option>
-        <option v-for="td in tds" :key="td" :value="td">{{ td }}</option>
-      </select>
-      
-      <select v-model="selectedTP">
-        <option value="" disabled>Sélectionner votre groupe de TP</option>
-        <option v-for="tp in tps" :key="tp" :value="tp">{{ tp }}</option>
-      </select>
-    </div>
-
-    <!-- LISTE ÉLÈVES -->
     <div class="student-list">
       <div class="student-list-header">
         <span>Nom / Prénom</span>
@@ -205,16 +40,25 @@ select:focus {
         <span>{{ student.promo }}</span>
         <span>{{ student.group }}</span>
 
-        <div class="actions-cell">
-          <input type="file" accept="image/png" @change="onUploadJustif($event, student.id)" />
-          <button v-if="student.justificatif" class="btn-modify" @click="viewJustif(student.id)">
-            Voir justificatif
-          </button>
+        <div class="justify-cell" style="display:flex; gap:8px; align-items:center;">
+          <div>
+            <small v-if="student.justificationName" title="Justificatif déjà présent">
+              ✅ {{ student.justificationName }}
+            </small>
+            <small v-else>—</small>
+          </div>
+
+          <button class="btn-modify" @click="uploadJustification(student.id)">Importer justificatif</button>
+
+          <input :id="`just-input-${student.id}`" type="file" accept=".pdf,.jpg,.jpeg,.png"
+            hidden
+            @change="event => onJustificationChange(event, student.id)"
+          />
         </div>
       </div>
 
       <p v-if="filteredStudents.length === 0" class="no-results">
-        Aucun élève absent.
+        Aucun élève ne correspond aux filtres sélectionnés.
       </p>
     </div>
   </main>
@@ -222,66 +66,83 @@ select:focus {
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const fileInput = ref(null);
-const STORAGE_KEY = "studentsList_v1";
-const allStudents = ref([]);
 
-// Filtres sélectionnés
 const selectedPromo = ref("");
 const selectedTD = ref("");
 const selectedTP = ref("");
 
-// Listes fixes (à ajuster selon besoin)
-const promos = ['A1', 'A2', 'A3'];
-const tds = ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7'];
-const tps = [];
-for (let i = 1; i <= 7; i++) {
-  tps.push(`G${i}-A`);
-  tps.push(`G${i}-B`);
-}
+const STORAGE_KEY = "studentsList_v1";
+const JUSTIF_KEY = "justifications_v1";
+
+const allStudents = ref([]);
+const justifications = ref([]); // list of { studentName, promo, group, justificationName, data, timestamp }
 
 onMounted(() => {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (raw) {
     try {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) allStudents.value = parsed;
+      if (Array.isArray(parsed)) {
+        allStudents.value = parsed;
+      }
     } catch (e) {
       console.warn("Erreur parsing localStorage:", e);
     }
   }
+
+  const rawJ = localStorage.getItem(JUSTIF_KEY);
+  if (rawJ) {
+    try {
+      const parsedJ = JSON.parse(rawJ);
+      if (Array.isArray(parsedJ)) justifications.value = parsedJ;
+    } catch (e) {
+      console.warn("Erreur parsing justifications:", e);
+    }
+  }
 });
 
-// Filtrage selon promo, TD, TP et absent = true
 const filteredStudents = computed(() => {
-  let students = allStudents.value.filter(s => s.absent);
+  let students = allStudents.value.slice();
 
   if (selectedPromo.value) {
-    students = students.filter(s => s.promo === selectedPromo.value);
+    students = students.filter((s) => s.promo === selectedPromo.value);
   }
 
   if (selectedTD.value) {
-    students = students.filter(s => s.group.startsWith(selectedTD.value));
+    students = students.filter((s) => s.group.startsWith(selectedTD.value));
   }
 
   if (selectedTP.value) {
-    students = students.filter(s => s.group === selectedTP.value);
+    students = students.filter((s) => s.group === selectedTP.value);
   }
 
   return students;
 });
 
-const openExplorer = () => fileInput.value && fileInput.value.click();
+const openExplorer = () => {
+  if (fileInput.value) fileInput.value.click();
+};
 
 function saveToStorage() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(allStudents.value));
 }
 
+function saveJustifications() {
+  localStorage.setItem(JUSTIF_KEY, JSON.stringify(justifications.value));
+}
+
 function normalizeCell(cell) {
   if (typeof cell !== "string") return "";
   let c = cell.trim();
-  if ((c.startsWith('"') && c.endsWith('"')) || (c.startsWith("'") && c.endsWith("'"))) {
+  if (
+    (c.startsWith('"') && c.endsWith('"')) ||
+    (c.startsWith("'") && c.endsWith("'"))
+  ) {
     c = c.slice(1, -1);
   }
   return c.trim();
@@ -292,138 +153,221 @@ const splitCommaAware = (line) => {
 };
 
 function mapHeaderIndex(headerArr) {
-  const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "");
-  const h = headerArr.map(hd => norm(normalizeCell(hd)));
+  const norm = (s) =>
+    s
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "");
+  const h = headerArr.map((hd) => norm(normalizeCell(hd)));
 
   return {
-    nom: h.indexOf('nom'),
-    prenom: h.indexOf('prenom'),
-    nomcomplet: h.indexOf('nomcomplet'),
-    name: h.indexOf('name'),
-    promo: h.indexOf('promo'),
-    groupe: h.indexOf('groupe'),
-    group: h.indexOf('group')
+    nom: h.indexOf("nom"),
+    prenom: h.indexOf("prenom"),
+    nomcomplet: h.indexOf("nomcomplet"),
+    name: h.indexOf("name"),
+    promo: h.indexOf("promo"),
+    groupe: h.indexOf("groupe"),
+    group: h.indexOf("group"),
   };
 }
 
 function parseCSVText(text) {
-  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
+  const lines = text
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter((l) => l !== "");
   if (lines.length === 0) return [];
 
-  // Remplacer splitCommaAware par splitSemicolonAware si ton CSV est séparé par des ;
-  const headerCols = splitSemicolonAware(lines[0]).map(normalizeCell);
+  const headerLine = lines[0];
+  const headerCols = splitCommaAware(headerLine);
   const mapIdx = mapHeaderIndex(headerCols);
 
   const rows = [];
   for (let i = 1; i < lines.length; i++) {
-    const cols = splitSemicolonAware(lines[i]).map(normalizeCell);
+    const cols = splitCommaAware(lines[i]);
+    let name = "";
+    const hasNomPrenom = mapIdx.nom !== -1 && mapIdx.prenom !== -1;
+    const hasNomComplet = mapIdx.nomcomplet !== -1;
+    const hasName = mapIdx.name !== -1;
 
-    const prenom = mapIdx.prenom !== -1 ? cols[mapIdx.prenom] : "";
-    const nom = mapIdx.nom !== -1 ? cols[mapIdx.nom] : "";
+    if (hasNomPrenom) {
+      const nom = normalizeCell(cols[mapIdx.nom] || "");
+      const prenom = normalizeCell(cols[mapIdx.prenom] || "");
+      name = (nom + " " + prenom).trim();
+    } else if (hasNomComplet) {
+      name = normalizeCell(cols[mapIdx.nomcomplet] || "");
+    } else if (hasName) {
+      name = normalizeCell(cols[mapIdx.name] || "");
+    } else {
+      name = normalizeCell(cols[0] || "");
+    }
 
-    const promo = mapIdx.promo !== -1 ? cols[mapIdx.promo] : "";
-    const group = (mapIdx.groupe !== -1 ? cols[mapIdx.groupe] : (mapIdx.group !== -1 ? cols[mapIdx.group] : ""));
+    const promoIdx = mapIdx.promo;
+    const promo = promoIdx !== -1 ? normalizeCell(cols[promoIdx] || "") : "";
 
-    if (nom || prenom) {
+    const groupeIdx =
+      mapIdx.groupe !== -1 ? mapIdx.groupe : mapIdx.group !== -1 ? mapIdx.group : -1;
+    const group = groupeIdx !== -1 ? normalizeCell(cols[groupeIdx] || "") : "";
+
+    if (name) {
       rows.push({
-        id: rows.length + 1,
-        nom,
-        prenom,
-        name: `${nom} ${prenom}`,
+        name,
         promo,
         group,
-        absent: true,
-        justificatif: null,
+        justification: null,
+        justificationName: null,
       });
     }
   }
-  return rows;
-}
 
+  return rows.map((s, idx) => ({ ...s, id: idx + 1 }));
+}
 
 function readFileAsTextWithEncoding(file, encoding = "utf-8") {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => resolve(e.target.result);
-    reader.onerror = reject;
-    reader.readAsText(file, encoding);
+    reader.onerror = (e) => reject(e);
+    try {
+      reader.readAsText(file, encoding);
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
 async function onFileChange(event) {
   const file = event.target.files ? event.target.files[0] : event;
-  console.log("Fichier sélectionné :", file);
-  if (!file) {
-    alert("Aucun fichier sélectionné.");
-    return;
-  }
-
+  if (!file) return;
   try {
     let text = await readFileAsTextWithEncoding(file, "utf-8");
-    console.log("Contenu du fichier :", text.slice(0, 500)); // affiche les 500 premiers caractères
-
+    const looksBinary = text.includes("\u0000");
+    if (looksBinary) {
+      try {
+        text = await readFileAsTextWithEncoding(file, "utf-16le");
+      } catch {
+        // ignore
+      }
+    }
+    if (text.includes("\u0000")) {
+      try {
+        text = await readFileAsTextWithEncoding(file, "utf-16");
+      } catch {
+        // ignore
+      }
+    }
     const imported = parseCSVText(text);
+
     if (imported.length === 0) {
-      alert("CSV invalide ou vide.");
+      alert(
+        "Aucune ligne trouvée dans le CSV ou format non reconnu. Vérifie que le CSV contient l'entête : Nom;Prénom;Promo;Groupe"
+      );
       return;
     }
-
-    allStudents.value = imported.map((s, idx) => ({ ...s, id: idx + 1 }));
+    allStudents.value = imported;
     saveToStorage();
-    if (fileInput.value) fileInput.value.value = "";
 
+    if (fileInput.value) {
+      fileInput.value.value = "";
+    }
   } catch (err) {
-    console.error("Erreur lors de l'importation du fichier :", err);
-    alert("Erreur lors de l'importation du fichier.");
+    console.error("Erreur lecture fichier :", err);
+    alert(
+      "Erreur lors de la lecture du fichier. Vérifie l'encodage et le format (Format attendu : séparateur ;)"
+    );
   }
 }
 
+function uploadJustification(id) {
+  const el = document.getElementById(`just-input-${id}`);
+  if (el) el.click();
+}
 
-function onUploadJustif(event, id) {
-  const file = event.target.files[0];
+function onJustificationChange(event, id) {
+  const file = event.target.files?.[0];
   if (!file) return;
-
-  if (file.type !== "image/png") {
-    alert("Le justificatif doit être un fichier PNG.");
-    return;
-  }
 
   const reader = new FileReader();
   reader.onload = () => {
-    const base64 = reader.result;
-    const stu = allStudents.value.find(s => s.id === id);
-    if (stu) {
-      stu.justificatif = base64;
-      stu.absent = false;
-      saveToStorage();
+    const dataUrl = reader.result; // base64
+    const studentIndex = allStudents.value.findIndex((s) => s.id === id);
+    if (studentIndex === -1) {
+      alert("Élève introuvable (probablement déjà supprimé).");
+      return;
     }
+    const student = allStudents.value[studentIndex];
+
+    // push into justifications store
+    const record = {
+      studentName: student.name,
+      promo: student.promo,
+      group: student.group,
+      justificationName: file.name,
+      data: dataUrl,
+      timestamp: new Date().toISOString(),
+    };
+    justifications.value.push(record);
+    saveJustifications();
+
+    // remove the student from list (as requested)
+    allStudents.value.splice(studentIndex, 1);
+    // reassign ids sequentially
+    allStudents.value = allStudents.value.map((s, idx) => ({ ...s, id: idx + 1 }));
+    saveToStorage();
+
+    // clear file input value so same file can be reuploaded later if necessary
+    event.target.value = "";
+
+    alert(`Justificatif importé et élève supprimé : ${student.name}`);
   };
+
+  reader.onerror = (err) => {
+    console.error("Erreur lecture justificatif :", err);
+    alert("Impossible de lire le fichier justificatif.");
+  };
+
   reader.readAsDataURL(file);
 }
 
-function viewJustif(id) {
-  const stu = allStudents.value.find(s => s.id === id);
-  if (stu && stu.justificatif) {
-    const win = window.open();
-    win.document.write(`<img src="${stu.justificatif}" style="max-width:100%">`);
-  }
-}
+const modifyStudent = (id) => {
+  console.log(`Demande de modification pour l'élève ${id}`);
+  alert("Fonction modifier non implémentée (à ajouter selon besoins).");
+};
+
+const deleteStudent = (id) => {
+  if (!confirm("Supprimer cet élève ?")) return;
+  allStudents.value = allStudents.value
+    .filter((s) => s.id !== id)
+    .map((s, idx) => ({ ...s, id: idx + 1 }));
+  saveToStorage();
+};
+
+const home = () => {
+  router.push("/first");
+};
 </script>
 
 <style scoped>
 .logo {
   width: 60px;
-  border-radius: 10px;
-  margin: 10px;
+  height: auto;
+  border-radius: 12px;
+  margin: 12px 10px 12px 0;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #791919;
+  background-color: #7a1919;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   padding: 0 5%;
-  box-shadow: 0 2px 8px rgba(86, 0, 0, 0.15);
+  box-shadow: 0 3px 10px rgba(120, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .navbar ul {
@@ -431,17 +375,49 @@ function viewJustif(id) {
   list-style: none;
   padding: 0;
   margin: 0;
+  margin-left: auto;
 }
 
 .navbar ul li a {
-  color: white;
-  padding: 24px 18px;
-  text-decoration: none;
+  color: #fff;
+  padding: 22px 20px;
   font-weight: 600;
+  font-size: 15px;
+  text-transform: capitalize;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  transition: color 0.3s ease;
+  border-radius: 6px;
+}
+
+.navbar ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: #ffc2c2;
+  transform: translateX(-50%);
+  transition: width 0.3s ease-in-out;
+  border-radius: 2px;
 }
 
 .navbar ul li a:hover {
   color: #ffc2c2;
+  background-color: rgba(255, 194, 194, 0.15);
+}
+
+.navbar ul li a:hover::after,
+.navbar ul li a.router-link-exact-active::after {
+  width: 70%;
+}
+
+.navbar ul li a.router-link-exact-active {
+  color: #ffc2c2;
+  font-weight: 700;
+  background-color: rgba(255, 194, 194, 0.25);
 }
 
 .student-list-container {
@@ -449,35 +425,36 @@ function viewJustif(id) {
   max-width: 1200px;
   margin: 40px auto;
   color: #791919;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 h1 {
   text-align: center;
   font-weight: 700;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+  font-size: 2.8rem;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
 }
 
-/* Conteneur des filtres */
 .filters-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 select {
   background-color: #fff5f5;
-  border-radius: 20px;
-  padding: 12px 18px;
+  border-radius: 25px;
+  padding: 14px 22px;
   font-family: inherit;
   color: #791919;
-  font-size: 14px;
-  min-width: 220px;
+  font-size: 15px;
+  min-width: 280px;
   cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
 }
 
 select option[value=""] {
@@ -486,65 +463,166 @@ select option[value=""] {
 
 select:focus {
   background-color: #ffffff;
-  border-color: #ffd6d6;
+  border-color: #ff7b7b;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 200, 200, 0.4);
+  box-shadow: 0 0 6px 3px rgba(255, 123, 123, 0.3);
 }
 
 .student-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 .student-list-header {
   display: grid;
   grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
-  padding: 10px 20px;
+  gap: 20px;
+  padding: 14px 24px;
   font-weight: 700;
-  border-bottom: 2px solid #ffdfdf;
+  font-size: 15px;
+  color: #555;
+  border-bottom: 3px solid #ffdfdf;
+  background-color: #ffe5e5;
+  border-radius: 12px;
 }
 
 .student-item {
   display: grid;
   grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
-  background: #fff5f5;
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
+  gap: 20px;
   align-items: center;
+  background-color: #fff5f5;
+  border-radius: 18px;
+  padding: 18px 24px;
+  box-shadow: 0 3px 8px rgba(255, 130, 130, 0.35);
+  font-weight: 500;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.student-item:hover {
+  background-color: #ffdada;
+  box-shadow: 0 6px 15px rgba(255, 110, 110, 0.5);
+}
+
+.student-item span:first-child {
+  font-weight: 700;
 }
 
 .actions-cell {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: flex-end;
-  align-items: center;
 }
 
-.actions-cell input[type="file"] {
+.btn-modify,
+.btn-delete {
+  border: none;
+  border-radius: 12px;
+  padding: 9px 18px;
+  color: white;
   cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background-color 0.3s ease, opacity 0.2s ease;
+  user-select: none;
 }
 
 .btn-modify {
-  background: #791919;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 8px 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  background-color: #7a1919;
+}
+
+.btn-delete {
+  background-color: #d93030;
 }
 
 .btn-modify:hover {
-  background-color: #a02222;
+  background-color: #5e1212;
+}
+
+.btn-delete:hover {
+  background-color: #b22222;
+}
+
+.custom-file-upload {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #791919;
+  color: white;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.custom-file-upload:hover {
+  background-color: #5c1212;
 }
 
 .no-results {
   text-align: center;
   color: #777;
-  padding: 20px;
+  padding: 24px;
   font-style: italic;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .student-list-header,
+  .student-item {
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    font-size: 14px;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .filters-container {
+    gap: 14px;
+  }
+
+  select {
+    min-width: 200px;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .student-list-header,
+  .student-item {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 8px;
+    padding: 12px 14px;
+  }
+
+  .student-list-header > *:nth-child(3),
+  .student-list-header > *:nth-child(4),
+  .student-item > *:nth-child(3),
+  .actions-cell {
+    display: none;
+  }
+
+  .actions-cell {
+    justify-content: flex-start;
+  }
+
+  .filters-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  select {
+    min-width: 100%;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
 }
 
 </style>
