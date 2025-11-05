@@ -1,21 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LoginPage from "../LoginPage.vue";
+import LoginPage from "../pages/LoginPage.vue";
 
-import SecretaryFirstPage from "../secretary/FirstPage.vue";
-import YearPage from "../secretary/YearPage.vue";
-import ImportStudentPage from "../secretary/ImportStudentPage.vue";
-import ImportGroupPage from "../secretary/ImportGroupPage.vue";
-import ImportProfessorPage from "../secretary/ImportProfessorPage.vue";
-import ImportRessourcesPage from "../secretary/ImportRessourcesPage.vue";
-import JustificationPage from "../secretary/JustificationPage.vue";
-import ListPage from "../temp.vue";
+import SecretaryFirstPage from "../pages/secretary/FirstPage.vue";
+import YearPage from "../pages/secretary/YearPage.vue";
+import ImportStudentPage from "../pages/secretary/ImportStudentPage.vue";
+import ImportGroupPage from "../pages/secretary/ImportGroupPage.vue";
+import ImportProfessorPage from "../pages/secretary/ImportProfessorPage.vue";
+import ImportRessourcesPage from "../pages/secretary/ImportRessourcesPage.vue";
+import JustificationPage from "../pages/secretary/JustificationPage.vue";
+import ListPage from "../pages/temp.vue";
 
-import ProfessorFirstPage from "../professor/FirstPage.vue";
-import GroupPage from "../GroupPage.vue";
-import CoursPage from "../CoursPage.vue";
-import CMPage from "../CMPage.vue";
-import RessourcePage from "../RessourcePage.vue";
-import AboutPage from "../AboutPage.vue";
+import ProfessorFirstPage from "../pages/professor/FirstPage.vue";
+import GroupPage from "../pages/GroupPage.vue";
+import CoursPage from "../pages/CoursPage.vue";
+import CMPage from "../pages/CMPage.vue";
+import RessourcePage from "../pages/RessourcePage.vue";
+import AboutPage from "../pages/AboutPage.vue";
 
 const routes = [
   { path: "/", component: LoginPage },
