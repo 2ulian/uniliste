@@ -1,4 +1,4 @@
-FROM rust:1.82 as builder
+FROM rust:1.83 as builder
 
 WORKDIR /app
 
@@ -16,7 +16,6 @@ FROM debian:bookworm-slim
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \
     ca-certificates \
-    libc6 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

@@ -6,11 +6,11 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 # Copy only dependency files to leverage cache
-COPY ./frontend/package.json ./frontend/pnpm-lock.yaml* ./
-RUN pnpm install
+COPY frontend/package.json frontend/pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile
 
 # Copy all frontend code
-COPY ./frontend .
+COPY frontend/ .
 
 # Vite dev server (port defined in vite.config.js)
 EXPOSE 1420
