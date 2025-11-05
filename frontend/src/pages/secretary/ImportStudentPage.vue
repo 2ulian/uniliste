@@ -2,13 +2,13 @@
   <nav class="navbar">
     <img src="../assets/unilim.png" alt="Logo" class="logo" />
     <ul>
-      <li><router-link to="/first" id="nav-links">Menu</router-link></li>
-      <li><router-link to="/annee" id="nav-links">Annee Universitaire</router-link></li>
-      <li><router-link to="/group" id="nav-links">Importer groupes</router-link></li>
-      <li><router-link to="/ressources" id="nav-links">Importer ressources</router-link></li>
-      <li><router-link to="/professor" id="nav-links">Importer professeur</router-link></li>
-      <li><router-link to="/justification" id="nav-links">Saisir justificatif</router-link></li>
-      <li><router-link to="/" id="nav-links">Quitter</router-link></li>
+      <li><router-link to="/first" class="nav-links">Menu</router-link></li>
+      <li><router-link to="/annee" class="nav-links">Annee Universitaire</router-link></li>
+      <li><router-link to="/group" class="nav-links">Importer groupes</router-link></li>
+      <li><router-link to="/ressources" class="nav-links">Importer ressources</router-link></li>
+      <li><router-link to="/professor" class="nav-links">Importer professeur</router-link></li>
+      <li><router-link to="/justification" class="nav-links">Saisir justificatif</router-link></li>
+      <li><router-link to="/" class="nav-links">Quitter</router-link></li>
     </ul>
   </nav>
 
@@ -32,18 +32,23 @@
         <span>Nom / Prénom</span>
         <span>Promo</span>
         <span>Groupe</span>
+        <span></span>
       </div>
 
-      <div v-for="student in filteredStudents" :key="student.id" class="student-item">
+      <div
+        v-for="student in filteredStudents"
+        :key="student.id"
+        class="student-item"
+      >
         <span>{{ student.name }}</span>
         <span>{{ student.promo }}</span>
         <span>{{ student.group }}</span>
+
         <div class="actions-cell">
           <button class="btn-modify" @click="modifyStudent(student.id)">Modifier</button>
           <button class="btn-delete" @click="deleteStudent(student.id)">Supprimer</button>
         </div>
       </div>
-
 
       <p v-if="filteredStudents.length === 0" class="no-results">
         Aucun élève ne correspond aux filtres sélectionnés.
@@ -59,16 +64,13 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const fileInput = ref(null);
-
 const selectedPromo = ref("");
 const selectedTD = ref("");
 const selectedTP = ref("");
-
 const STORAGE_KEY = "studentsList_v1";
 
 const allStudents = ref([]);
 
-// Chargement localStorage au montage
 onMounted(() => {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (raw) {
@@ -77,27 +79,21 @@ onMounted(() => {
       if (Array.isArray(parsed) && parsed.length) {
         allStudents.value = parsed;
       }
-    } catch (e) {
-      console.warn("Erreur parsing localStorage:", e);
-    }
+    } catch (e) {}
   }
 });
 
 const filteredStudents = computed(() => {
   let students = allStudents.value.slice();
-
   if (selectedPromo.value) {
     students = students.filter((s) => s.promo === selectedPromo.value);
   }
-
   if (selectedTD.value) {
     students = students.filter((s) => s.group.startsWith(selectedTD.value));
   }
-
   if (selectedTP.value) {
     students = students.filter((s) => s.group === selectedTP.value);
   }
-
   return students;
 });
 
@@ -121,8 +117,8 @@ function normalizeCell(cell) {
   return c.trim();
 }
 
-const splitSemicolonAware = (line) => {
-  return line.split(/;(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+const splitCommaAware = (line) => {
+  return line.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
 };
 
 function mapHeaderIndex(headerArr) {
@@ -133,7 +129,6 @@ function mapHeaderIndex(headerArr) {
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/\s+/g, "");
   const h = headerArr.map((hd) => norm(normalizeCell(hd)));
-
   return {
     nom: h.indexOf("nom"),
     prenom: h.indexOf("prenom"),
@@ -144,10 +139,6 @@ function mapHeaderIndex(headerArr) {
     group: h.indexOf("group"),
   };
 }
-// Split en , en ignorant les , dans guillemets
-const splitCommaAware = (line) => {
-  return line.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
-};
 
 function parseCSVText(text) {
   const lines = text
@@ -155,14 +146,13 @@ function parseCSVText(text) {
     .map((l) => l.trim())
     .filter((l) => l !== "");
   if (lines.length === 0) return [];
-
   const headerLine = lines[0];
-  const headerCols = splitCommaAware(headerLine); // <-- ici
+  const headerCols = splitCommaAware(headerLine);
   const mapIdx = mapHeaderIndex(headerCols);
-
   const rows = [];
+
   for (let i = 1; i < lines.length; i++) {
-    const cols = splitCommaAware(lines[i]); // <-- ici
+    const cols = splitCommaAware(lines[i]);
     let name = "";
     const hasNomPrenom = mapIdx.nom !== -1 && mapIdx.prenom !== -1;
     const hasNomComplet = mapIdx.nomcomplet !== -1;
@@ -184,7 +174,12 @@ function parseCSVText(text) {
     const promo = promoIdx !== -1 ? normalizeCell(cols[promoIdx] || "") : "";
 
     const groupeIdx =
-      mapIdx.groupe !== -1 ? mapIdx.groupe : mapIdx.group !== -1 ? mapIdx.group : -1;
+      mapIdx.groupe !== -1
+        ? mapIdx.groupe
+        : mapIdx.group !== -1
+        ? mapIdx.group
+        : -1;
+
     const group = groupeIdx !== -1 ? normalizeCell(cols[groupeIdx] || "") : "";
 
     if (name) {
@@ -196,9 +191,11 @@ function parseCSVText(text) {
     }
   }
 
-  return rows.map((s, idx) => ({ ...s, id: idx + 1 }));
+  return rows.map((s, idx) => ({
+    ...s,
+    id: idx + 1,
+  }));
 }
-
 
 function readFileAsTextWithEncoding(file, encoding = "utf-8") {
   return new Promise((resolve, reject) => {
@@ -216,23 +213,22 @@ function readFileAsTextWithEncoding(file, encoding = "utf-8") {
 async function onFileChange(event) {
   const file = event.target.files ? event.target.files[0] : event;
   if (!file) return;
+
   try {
     let text = await readFileAsTextWithEncoding(file, "utf-8");
+
     const looksBinary = text.includes("\u0000");
     if (looksBinary) {
       try {
         text = await readFileAsTextWithEncoding(file, "utf-16le");
-      } catch {
-        // ignore
-      }
+      } catch {}
     }
     if (text.includes("\u0000")) {
       try {
         text = await readFileAsTextWithEncoding(file, "utf-16");
-      } catch {
-        // ignore
-      }
+      } catch {}
     }
+
     const imported = parseCSVText(text);
 
     if (imported.length === 0) {
@@ -241,6 +237,7 @@ async function onFileChange(event) {
       );
       return;
     }
+
     allStudents.value = imported;
     saveToStorage();
 
@@ -248,7 +245,6 @@ async function onFileChange(event) {
       fileInput.value.value = "";
     }
   } catch (err) {
-    console.error("Erreur lecture fichier :", err);
     alert(
       "Erreur lors de la lecture du fichier. Vérifie l'encodage et le format (Format attendu : séparateur ;)"
     );
@@ -271,9 +267,8 @@ const home = () => {
   router.push("/first");
 };
 </script>
-
 <style scoped>
-  .logo {
+.logo {
   width: 60px;
   height: auto;
   border-radius: 12px;
@@ -495,4 +490,57 @@ select:focus {
   font-style: italic;
   font-size: 16px;
 }
+
+@media (max-width: 768px) {
+  .student-list-header,
+  .student-item {
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    font-size: 14px;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .filters-container {
+    gap: 14px;
+  }
+
+  select {
+    min-width: 200px;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .student-list-header,
+  .student-item {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 8px;
+    padding: 12px 14px;
+  }
+
+  .student-list-header > *:nth-child(3),
+  .student-list-header > *:nth-child(4),
+  .student-item > *:nth-child(3),
+  .actions-cell {
+    display: none;
+  }
+
+  .actions-cell {
+    justify-content: flex-start;
+  }
+
+  .filters-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  select {
+    min-width: 100%;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+}
 </style>
+
