@@ -4,9 +4,9 @@ services:
       context: .
       dockerfile: Docker/frontend/Dockerfile
     ports:
-      - "5173:5173"
+      - "1420:1420"
     volumes:
-      - ./uniliste:/app
+      - ./frontend:/app
       - /app/node_modules
     depends_on:
       - backend
@@ -17,9 +17,7 @@ services:
       dockerfile: Docker/backend/Dockerfile
     ports:
       - "8000:8000" # API Rust
-    volumes:
-      - ./uniliste/src-tauri:/app
-      - /app/target
+    volumes: []
     environment:
       - DATABASE_URL=mongodb://mongodb:27017/uniliste
     depends_on:
@@ -27,7 +25,6 @@ services:
 
   mongodb:
     image: mongo:6
-    restart: always
     ports:
       - "27017:27017"
     volumes:
