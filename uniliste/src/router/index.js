@@ -16,7 +16,6 @@ import CoursPage from "../CoursPage.vue";
 import CMPage from "../CMPage.vue";
 import RessourcePage from "../RessourcePage.vue";
 import AboutPage from "../AboutPage.vue";
-import { path } from "@tauri-apps/api";
 
 const routes = [
   { path: "/", component: LoginPage },
