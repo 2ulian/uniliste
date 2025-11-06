@@ -3,88 +3,117 @@
     <nav class="navbar">
       <img src="../assets/unilim.png" alt="Logo" class="logo" />
       <ul>
-        <li><router-link to="/prof">retourner au menu</router-link></li>
-        <li><router-link to="/list">liste des eleves</router-link></li>
-        <li><router-link to="/ajouter-eleve">ajouter un eleve</router-link></li>
-        <li><router-link to="/supprimer-eleve">supprimer un eleve</router-link></li>
-        <li><router-link to="/modifier-eleve">modifier un eleve</router-link></li>
-        <li><router-link to="/">quitter</router-link></li>
+        <li><router-link to="/prof">Menu</router-link></li>
+        <li><router-link to="/list">liste des élèves</router-link></li>
+        <li><router-link to="/ajouter-eleve">Listes d'appel</router-link></li>
+        <li><router-link to="/supprimer-eleve">Liste personnel</router-link></li>
+        <li><router-link to="/modifier-eleve">???</router-link></li>
+        <li><router-link to="/">Se déconnecter</router-link></li>
       </ul>
     </nav>
 
-    <main class="grid-container">
-      <section class="grid-item">
-        <h1>Bonjour &lt;Professeur&gt;</h1>
-        <h2>Voici vos prochains cours</h2>
-        <div class="info-box">
-          <div class="info-item"><span>CM Amp C</span> <span>R1.01</span> <span>10h30–12h00</span></div>
-          <div class="info-item"><span>TD 209</span> <span>R1.01</span> <span>13h30–15h30</span></div>
-        </div>
-      </section>
+    <main class="dashboard-container">
+      <h1>Bonjour M. Hugel</h1>
 
-      <section class="grid-item">
-        <h2>Mesures disciplinaires</h2>
-        <div class="info-box large"></div>
-      </section>
+      <div class="dashboard-grid">
+        
+        <section class="grid-column">
+          <h2>Vos prochains cours</h2>
+          <div class="course-card-container">
+            <div v-for="course in nextCourses" :key="course.title" class="course-card">
+              <span class="course-title">{{ course.title }}</span>
+              <span class="course-details">{{ course.details }}</span>
+              <span class="course-time">{{ course.time }}</span>
+            </div>
+          </div>
+        </section>
 
-      <section class="grid-item">
-        <h2>Commentaires</h2>
-        <textarea v-model="comment" placeholder="Entrez votre commentaire ici..."></textarea>
-        <button @click="sendComment">Envoyer</button>
-        <p>{{ commentMessage }}</p>
-      </section>
+        <section class="grid-column">
+          <div class="module">
+            <h2>Appel à faire</h2>
+            <div class="list-container">
+              <div v-for="call in callsToDo" :key="call.course" class="list-item">
+                <span>{{ call.course }}</span>
+                <span>{{ call.time }}</span>
+                <span class="status-red">À faire</span>
+              </div>
+            </div>
+          </div>
+          <div class="module">
+            <h2>Absences des élèves</h2>
+            <div class="list-container">
+              <div v-for="absence in studentAbsences" :key="absence.name" class="list-item absence">
+                <span class="student-name">{{ absence.name }}</span>
+                <span>{{ absence.group }}</span>
+                <span :class="absence.status === 'Justifiée' ? 'status-green' : 'status-red'">
+                  {{ absence.status }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
 
-      <section class="grid-item">
-        <h2>Appels à faire</h2>
-        <div class="info-box">
-          <div class="info-item">TP  R3.02  10h30–12h30</div>
-          <div class="info-item">TD  R1.01  08h30–10h30</div>
-          <div class="info-item">CM  R2.01  13h30–15h00</div>
-        </div>
-      </section>
+        <section class="grid-column">
+          <div class="module">
+            <h2>Mesures disciplinaires</h2>
+            <p class="subtitle">Aucune mesure disciplinaire n'a été prise.</p>
+          </div>
+          <div class="module">
+            <h2>Absence personnel</h2>
+            <div class="list-container">
+              <div v-for="staff in staffAbsences" :key="staff.name" class="list-item staff">
+                <span class="staff-name">{{ staff.name }}</span>
+                <span class="staff-role">{{ staff.role }}</span>
+              </div>
+            </div>
+          </div>
+        </section>
 
-      <section class="grid-item">
-        <h2>Absence des élèves</h2>
-        <div class="info-box">
-          <div class="info-item"></div>
-          <div class="info-item"></div>
-          <div class="info-item"></div>
-        </div>
-      </section>
-
-      <section class="grid-item">
-        <h2>Absence des personnels</h2>
-        <div class="info-box">
-          <div class="info-item"></div>
-          <div class="info-item"></div>
-          <div class="info-item"></div>
-        </div>
-      </section>
+      </div>
     </main>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
+const nextCourses = ref([
+  { 
+    title: 'CM - Amphitheatre C', 
+    details: 'R1.01 - Initiation au développement', 
+    time: '10h30 - 12h00' 
+  },
+  { 
+    title: 'TD - 209', 
+    details: 'R3.05 - Systèmes d\'exploitations', 
+    time: '13h30 - 15h30' 
+  },
+]);
 
-const comment = ref("");
-const commentMessage = ref("");
+const callsToDo = ref([
+  { course: 'Cours R3.01', time: '8h00 - 10h00' },
+  { course: 'Cours R2.06', time: '10h00 - 12h00' },
+]);
 
-const sendComment = () => {
-  commentMessage.value = "Envoyé !";
-  setTimeout(() => (commentMessage.value = ""), 1000);
-};
+const studentAbsences = ref([
+  { name: 'DEGABRIEL Enzo', group: 'A2 G5-B', status: 'Justifiée' },
+  { name: 'VALET Martin', group: 'A2 G4-B', status: 'Injustifiée' },
+  { name: 'PASTEL Gaël', group: 'A2 G5-B', status: 'Justifiée' },
+]);
+
+const staffAbsences = ref([
+  { name: 'HUGEL Thomas', role: 'Enseignant' },
+  { name: 'BOULEISTEIX Claudie', role: 'Secrétaire' },
+]);
 </script>
 
 <style>
-/* Style global de la police */
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: #fafafa; /* Léger fond gris pour que les cartes ressortent */
+  background-color: #fafafa;
   margin: 0;
+  color: #791919;
 }
 
-/* --- STYLES NAVBAR MODERNISÉS --- */
 .logo {
   width: 60px;
   height: auto; 
@@ -95,10 +124,10 @@ body {
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Sépare logo et liens */
+  justify-content: space-between;
   background-color: #791919;
-  padding: 0 5%; /* Espace sur les côtés */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Ombre moderne */
+  padding: 0 5%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
@@ -117,137 +146,149 @@ body {
   text-transform: capitalize;
   padding: 24px 18px;
   display: block;
-  position: relative; /* Nécessaire pour l'animation ::after */
+  position: relative;
   transition: color 0.3s ease;
 }
 
-/* Ligne animée */
 .navbar li a::after {
   content: '';
   position: absolute;
-  bottom: 18px; /* Position de la ligne */
+  bottom: 18px;
   left: 50%;
-  width: 0; /* Largeur de 0 au repos */
+  width: 0;
   height: 3px;
   background: #ffc2c2;
   transform: translateX(-50%);
   transition: width 0.3s ease-in-out;
 }
 
-/* Effet au survol */
 .navbar li a:hover {
   color: #ffc2c2;
 }
 
 .navbar li a:hover::after {
-  width: 70%; /* La ligne grandit au survol */
+  width: 70%;
 }
 
-/* Effet sur le lien actif */
 .navbar li a.router-link-exact-active {
   color: #ffc2c2;
   font-weight: 700;
 }
 
 .navbar li a.router-link-exact-active::after {
-  width: 70%; /* La ligne est visible sur la page active */
+  width: 70%;
 }
 
-/* --- STYLES DU CONTENU (GRID) --- */
+.dashboard-container {
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
 
-.grid-container {
+.dashboard-container h1 {
+  text-align: center;
+  font-size: 40px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
+.dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Responsive */
-  grid-template-rows: repeat(2, auto);
+  grid-template-columns: 1.2fr 1fr 1fr; 
   gap: 30px;
-  padding: 40px;
+}
+
+.grid-column {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; 
+}
+
+.grid-column h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 10px; 
+}
+
+.list-container, .course-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.course-card {
+  background-color: #fff5f5;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.course-title {
+  font-weight: 700;
+  font-size: 16px;
+}
+.course-details, .course-time {
+  font-size: 15px;
+  color: #3d0000;
+}
+.course-time {
+  align-self: flex-end;
+  font-weight: 600;
+}
+
+.list-item {
+  background-color: #fff5f5;
+  border-radius: 15px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 4px #3d0000;
+  display: grid;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  
+  grid-template-columns: 1fr 1fr auto;
+  gap: 15px;
+}
+
+.list-item.absence {
+  grid-template-columns: 1.5fr 1fr auto;
+}
+.student-name {
+  font-weight: 700;
+}
+
+.list-item.staff {
+  grid-template-columns: 1.5fr 1fr;
+}
+.staff-name {
+  font-weight: 700;
+}
+.staff-role {
+  font-size: 14px;
   color: #791919;
 }
 
-.grid-item {
-  background-color: white;
-  border-radius: 15px;
-  padding: 20px;
-  /* Ombre plus subtile pour les cartes */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
-  display: flex; /* Ajouté pour un meilleur alignement */
-  flex-direction: column; /* Ajouté */
+.status-red {
+  color: #D93030;
+  font-weight: 700;
+  justify-self: end;
+}
+.status-green {
+  color: #28a745;
+  font-weight: 700;
+  justify-self: end;
 }
 
-h1, h2 {
-  margin-top: 0; /* Retire la marge haute par défaut */
-}
-
-.info-box {
-  width: 100%; /* Prend toute la largeur de la carte */
-  /* height: 150px; <-- Retiré pour la flexibilité */
-  flex-grow: 1; /* Fait grandir la box pour remplir l'espace */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.info-item {
-  background-color: #fff5f5;
-  border-radius: 15px;
-  padding: 10px 15px;
-  box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
-  font-size : 14px;
-  min-height: 1.2em; /* Hauteur minimale pour les items vides */
-  display: flex; /* Ajouté pour espacer les <span> */
-  justify-content: space-between; /* Ajouté */
-  flex-wrap: wrap; /* Ajouté */
-}
-
-.large {
-  /* height: 150px; <-- Remplacé par flex-grow dans .info-box */
-}
-
-textarea {
-  background-color: #fff5f5;
-  width : 100%; /* Largeur flexible */
-  /* height : 150px; <-- Remplacé par flex-grow */
-  flex-grow: 1; /* Prend l'espace disponible */
-  min-height: 150px; /* Hauteur minimale */
-  border-radius: 15px;
-  padding: 10px 15px;
-  box-shadow: 0 2px 4px rgba(255, 157, 157, 0.3);
-  resize: none;
-  border: none;
-  font-family : inherit;
-  box-sizing: border-box; /* Important pour le width: 100% */
-}
-
-textarea::placeholder {
-  font-style: italic;
-  color: #c9a9a9;
-}
-
-textarea:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 157, 157, 0.6);
-}
-
-button {
-  background-color: #791919;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 16px;
-  margin-top: 10px;
-  cursor: pointer;
-  font-family: inherit;
-  font-weight: 600;
-  font-size: 15px;
-  transition: background-color 0.2s;
-}
-
-button:hover {
-  background-color: #5a1212;
-}
-
-p {
-  margin-top: 10px;
+.subtitle {
   font-size: 14px;
+  color : #791919;
+  font-style: italic;
+  margin: 0;
 }
 </style>
