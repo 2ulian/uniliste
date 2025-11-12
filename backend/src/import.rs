@@ -31,3 +31,16 @@ async fn connect_mongo() -> Result<Client> {
     let client = Client::with_options(opts)?;
     Ok(client)
 }
+
+/// Effectue un upsert générique : met à jour si le document existe, sinon insère
+async fn upsert_doc(collection: &Collection<Document>, id: Bson, doc: Document) -> Result<()> {
+    let filter = doc! { "_id": id.clone() };
+    let update = doc! { "$set": doc };
+    let opts = UpdateOptions::builder().upsert(true).build();
+
+    collection
+        .update_one(filter, update, opts)
+        .await
+        .context("Erreur lors de l'upsert")?;
+    Ok(())
+}
