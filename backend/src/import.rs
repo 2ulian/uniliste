@@ -44,3 +44,42 @@ async fn upsert_doc(collection: &Collection<Document>, id: Bson, doc: Document) 
         .context("Erreur lors de l'upsert")?;
     Ok(())
 }
+
+
+#[derive(Debug, Deserialize)]
+struct StudentCsv {
+    ine: i32,
+    nom: String,
+    prenom: String,
+    age: Option<i32>,
+    promo: Option<i32>,
+    groupe_td: Option<i32>,
+    groupe_tp: Option<i32>,
+    groupe: Option<String>,
+}
+
+async fn import_students(collection: Collection<Document>, path: &Path) -> Result<()> {
+    println!("📘 Import des étudiants depuis {}", path.display());
+    let mut rdr = ReaderBuilder::new().trim(csv::Trim::All).from_path(path)?;
+    let mut count = 0;
+
+    for rec in rdr.deserialize::<StudentCsv>() {
+        let rec = rec.context("Erreur de parsing CSV étudiant")?;
+        let doc = doc! {
+            "_id": rec.INE,
+            "nom": rec.nom.trim(),
+            "prenom": rec.prenom.trim(),
+            "age": rec.age.unwrap_or_default(),
+            "promo": rec.promo.unwrap_or_default(),
+            "groupeTD": rec.groupeTD.unwrap_or_default(),
+            "groupeTP": rec.groupeTP.unwrap_or_default(),
+            "groupe": rec.groupe.unwrap_or_default(),
+        };
+
+        upsert_doc(&collection, Bson::Int32(rec.INE), doc).await?;
+        count += 1;
+    }
+
+    println!("{count} étudiants importés/mis à jour !");
+    Ok(())
+}
