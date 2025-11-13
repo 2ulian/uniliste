@@ -1,4 +1,4 @@
- use std::net::SocketAddr;
+use std::net::SocketAddr;
 
 use axum::{
     extract::{Query, State},
@@ -8,8 +8,8 @@ use axum::{
      Json, Router,
  };
 use serde::{Deserialize, Serialize};
- use tower_http::{cors::CorsLayer, trace::TraceLayer};
- use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+use tower_http::{cors::CorsLayer, trace::TraceLayer};
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
  #[derive(Clone, Default)]
  struct AppState {}
@@ -39,6 +39,7 @@ async fn greet_http(Query(params): Query<GreetParams>) -> impl IntoResponse {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    
      tracing_subscriber::registry()
          .with(tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| "uniliste_backend=debug,axum=info,tower_http=info".into()))
          .with(tracing_subscriber::fmt::layer())

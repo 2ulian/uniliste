@@ -6,10 +6,11 @@ use clap::Parser;
 use csv::ReaderBuilder;
 use mongodb::{options::ClientOptions, Client, Collection};
 use serde::Deserialize;
+use std::fs::File;
 use std::path::Path;
 
 
-/// Command-line arguments
+
 #[derive(Parser, Debug)]
 #[command(name = "Import CSV")]
 #[command(about = "Importe des données CSV vers MongoDB avec upsert automatique", long_about = None)]
@@ -23,17 +24,16 @@ pub struct Args {
     pub file: String,
 }
 
-/// Connecte à MongoDB via DATABASE_URL ou valeur par défaut
+/// Connecte à MongoDB via DATABASE_URL
 async fn connect_mongo() -> Result<Client> {
     use std::env;
 
     // On lit d’abord la variable DATABASE_URL si elle existe.
-    // Par défaut on se connecte sur localhost (utile quand on lance le binaire depuis l'hôte
-    // et non depuis le réseau docker où le hostname `mongodb` serait résolu).
+
     let mongo_uri = env::var("DATABASE_URL")
         .unwrap_or_else(|_| "mongodb://127.0.0.1:27017/uniliste".into());
 
-    println!("🧭 Tentative de connexion à MongoDB : {}", mongo_uri);
+    println!("Tentative de connexion à MongoDB : {}", mongo_uri);
 
     let opts = ClientOptions::parse(&mongo_uri)
         .await
@@ -56,7 +56,7 @@ async fn upsert_doc(collection: &Collection<Document>, id: Bson, doc: Document) 
         .await
         .context("Erreur lors de l'upsert")?;
 
-    println!("🗃️  update_one result: matched={}, modified={}, upserted={:?}", res.matched_count, res.modified_count, res.upserted_id);
+    println!("Import ou modification : matched={}, modified={}, upserted={:?}", res.matched_count, res.modified_count, res.upserted_id);
     Ok(())
 }
 
@@ -95,9 +95,9 @@ struct SecretaryCsv {
 
 
 
-async fn import_students(collection: Collection<Document>, path: &Path) -> Result<()> {
+async fn import_students(collection: &Collection<Document>, path: &Path) -> Result<()> {
     println!("Import des étudiants depuis {}", path.display());
-    let mut rdr = ReaderBuilder::new().trim(csv::Trim::All).from_path(path)?;
+    let mut rdr = make_reader(path)?;
     let mut count = 0;
 
     for rec in rdr.deserialize::<StudentCsv>() {
@@ -113,9 +113,7 @@ async fn import_students(collection: Collection<Document>, path: &Path) -> Resul
             "groupe": rec.groupe.unwrap_or_default(),
         };
 
-        println!("➡️ Record parsed: INE={:?}, nom={}, prenom={}", rec.ine, rec.nom, rec.prenom);
-        upsert_doc(&collection, Bson::Int32(rec.ine), doc).await?;
-        println!("➡️ Record parsed: INE={:?}, nom={}, prenom={}", rec.ine, rec.nom, rec.prenom);
+        upsert_doc(collection, Bson::Int32(rec.ine), doc).await?;
         count += 1;
     }
 
@@ -124,9 +122,9 @@ async fn import_students(collection: Collection<Document>, path: &Path) -> Resul
 }
 
 
-async fn import_teachers(collection: Collection<Document>, path: &Path) -> Result<()> {
+async fn import_teachers(collection: &Collection<Document>, path: &Path) -> Result<()> {
     println!("Import des professeurs depuis {}", path.display());
-    let mut rdr = ReaderBuilder::new().trim(csv::Trim::All).from_path(path)?;
+    let mut rdr = make_reader(path)?;
     let mut count = 0;
 
     for rec in rdr.deserialize::<TeacherCsv>() {
@@ -145,7 +143,7 @@ async fn import_teachers(collection: Collection<Document>, path: &Path) -> Resul
             "numero_ressources": ressources,
         };
 
-        upsert_doc(&collection, Bson::String(rec.id.trim().to_string()), doc).await?;
+        upsert_doc(collection, Bson::String(rec.id.trim().to_string()), doc).await?;
         count += 1;
     }
 
@@ -153,9 +151,9 @@ async fn import_teachers(collection: Collection<Document>, path: &Path) -> Resul
     Ok(())
 }
 
-async fn import_resources(collection: Collection<Document>, path: &Path) -> Result<()> {
-    println!("📙 Import des ressources depuis {}", path.display());
-    let mut rdr = ReaderBuilder::new().trim(csv::Trim::All).from_path(path)?;
+async fn import_resources(collection: &Collection<Document>, path: &Path) -> Result<()> {
+    println!("Import des ressources depuis {}", path.display());
+    let mut rdr = make_reader(path)?;
     let mut count = 0;
 
     for rec in rdr.deserialize::<ResourceCsv>() {
@@ -165,35 +163,17 @@ async fn import_resources(collection: Collection<Document>, path: &Path) -> Resu
             "nom_de_matiere": rec.nom_de_matiere.trim(),
         };
 
-        upsert_doc(&collection, Bson::String(rec.id.trim().to_string()), doc).await?;
+        upsert_doc(collection, Bson::String(rec.id.trim().to_string()), doc).await?;
         count += 1;
     }
 
-    println!("✅ {count} ressources importées/mises à jour !");
+    println!("{count} ressources importées/mises à jour !");
     Ok(())
 }
 
-
-pub async fn run_import(args: Args) -> Result<()> {
-    let client = connect_mongo().await?;
-    let db = client.database("uniliste");
-    let collection = db.collection::<Document>(&args.collection);
-    let path = Path::new(&args.file);
-
-    match args.collection.as_str() {
-        "students" => import_students(collection, path).await?,
-        "teachers" => import_teachers(collection, path).await?,
-        "resources" => import_resources(collection, path).await?,
-        "secretaries" => import_secretaries(collection, path).await?,
-        _ => eprintln!(" Collection inconnue : {}", args.collection),
-    }
-
-    Ok(())
-}
-
-async fn import_secretaries(collection: Collection<Document>, path: &Path) -> Result<()> {
-    println!("📕 Import des secrétaires depuis {}", path.display());
-    let mut rdr = ReaderBuilder::new().trim(csv::Trim::All).from_path(path)?;
+async fn import_secretaries(collection: &Collection<Document>, path: &Path) -> Result<()> {
+    println!("Import des secrétaires depuis {}", path.display());
+    let mut rdr = make_reader(path)?;
     let mut count = 0;
 
     for rec in rdr.deserialize::<SecretaryCsv>() {
@@ -212,11 +192,36 @@ async fn import_secretaries(collection: Collection<Document>, path: &Path) -> Re
             "prenom": rec.prenom.trim(),
         };
 
-        upsert_doc(&collection, Bson::String(id_str), doc).await?;
+        upsert_doc(collection, Bson::String(id_str), doc).await?;
         count += 1;
     }
 
-    println!("✅ {count} secrétaires importées/mises à jour !");
+    println!("{count} secrétaires importées/mises à jour !");
+    Ok(())
+}
+
+fn make_reader(path: &Path) -> Result<csv::Reader<File>> {
+    ReaderBuilder::new()
+        .trim(csv::Trim::All)
+        .from_path(path)
+        .with_context(|| format!("Erreur ouverture du fichier CSV : {}", path.display()))
+}
+
+
+pub async fn run_import(args: Args) -> Result<()> {
+    let client = connect_mongo().await?;
+    let db = client.database("uniliste");
+    let collection = db.collection::<Document>(&args.collection);
+    let path = Path::new(&args.file);
+
+    match args.collection.as_str() {
+        "students" => import_students(&collection, path).await?,
+        "teachers" => import_teachers(&collection, path).await?,
+        "resources" => import_resources(&collection, path).await?,
+        "secretaries" => import_secretaries(&collection, path).await?,
+        _ => eprintln!(" Collection inconnue : {}", args.collection),
+    }
+
     Ok(())
 }
 
