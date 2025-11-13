@@ -1,7 +1,7 @@
 <template>
 
     <head class="navbar">
-        <img src="../assets/unilim.png" alt="Logo" class="logo" />
+        <img src="../../assets/unilim.png" alt="Logo" class="logo" />
         <ul>
             <li><router-link to="/first" id="nav-links">Menu</router-link></li>
             <li><router-link to="/student" id="nav-links">Importer étudiant</router-link></li>

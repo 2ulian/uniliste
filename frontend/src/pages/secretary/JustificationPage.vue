@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar">
-    <img src="../assets/unilim.png" alt="Logo" class="logo" />
+    <img src="../../assets/unilim.png" alt="Logo" class="logo" />
     <ul>
       <li><router-link to="/first" id="nav-links">Menu</router-link></li>
       <li><router-link to="/annee" id="nav-links">Année Universitaire</router-link></li>
@@ -9,7 +9,7 @@
       <li><router-link to="/ressources" id="nav-links">Importer ressources</router-link></li>
       <li><router-link to="/professor" id="nav-links">Importer professeur</router-link></li>
       <li><router-link to="/" id="nav-links">Quitter</router-link></li>
-    </ul>.
+    </ul>
   </nav>
 
   <main class="student-list-container">
@@ -43,7 +43,7 @@
         <div class="justify-cell" style="display:flex; gap:8px; align-items:center;">
           <div>
             <small v-if="student.justificationName" title="Justificatif déjà présent">
-              ✅ {{ student.justificationName }}
+              {{ student.justificationName }}
             </small>
             <small v-else>—</small>
           </div>
@@ -65,7 +65,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -80,7 +80,7 @@ const STORAGE_KEY = "studentsList_v1";
 const JUSTIF_KEY = "justifications_v1";
 
 const allStudents = ref([]);
-const justifications = ref([]); // list of { studentName, promo, group, justificationName, data, timestamp }
+const justifications = ref([]);
 
 onMounted(() => {
   const raw = localStorage.getItem(STORAGE_KEY);
@@ -91,7 +91,7 @@ onMounted(() => {
         allStudents.value = parsed;
       }
     } catch (e) {
-      console.warn("Erreur parsing localStorage:", e);
+      console.error("Erreur parse studentsList", e);
     }
   }
 
@@ -101,10 +101,18 @@ onMounted(() => {
       const parsedJ = JSON.parse(rawJ);
       if (Array.isArray(parsedJ)) justifications.value = parsedJ;
     } catch (e) {
-      console.warn("Erreur parsing justifications:", e);
+      console.error("Erreur parse justifications", e);
     }
   }
 });
+
+watch(
+  allStudents,
+  (newVal) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newVal));
+  },
+  { deep: true }
+);
 
 const filteredStudents = computed(() => {
   let students = allStudents.value.slice();
@@ -246,25 +254,24 @@ async function onFileChange(event) {
     if (looksBinary) {
       try {
         text = await readFileAsTextWithEncoding(file, "utf-16le");
-      } catch {
-        // ignore
-      }
+      } catch {}
     }
     if (text.includes("\u0000")) {
       try {
         text = await readFileAsTextWithEncoding(file, "utf-16");
-      } catch {
-        // ignore
-      }
+      } catch {}
     }
     const imported = parseCSVText(text);
 
     if (imported.length === 0) {
       alert(
-        "Aucune ligne trouvée dans le CSV ou format non reconnu. Vérifie que le CSV contient l'entête : Nom;Prénom;Promo;Groupe"
+        "Aucune donnée trouvée dans le CSV ou mauvais format. Vérifie que le CSV contient les colonnes Nom, Prénom, Promo, Groupe."
       );
       return;
     }
+
+    localStorage.setItem("csvRawContent_v1", text);
+
     allStudents.value = imported;
     saveToStorage();
 
@@ -272,9 +279,8 @@ async function onFileChange(event) {
       fileInput.value.value = "";
     }
   } catch (err) {
-    console.error("Erreur lecture fichier :", err);
     alert(
-      "Erreur lors de la lecture du fichier. Vérifie l'encodage et le format (Format attendu : séparateur ;)"
+      "Erreur lors de la lecture du fichier. Vérifie l'encodage et le format (ex: séparateur ;)."
     );
   }
 }
@@ -290,15 +296,14 @@ function onJustificationChange(event, id) {
 
   const reader = new FileReader();
   reader.onload = () => {
-    const dataUrl = reader.result; // base64
+    const dataUrl = reader.result;
     const studentIndex = allStudents.value.findIndex((s) => s.id === id);
     if (studentIndex === -1) {
-      alert("Élève introuvable (probablement déjà supprimé).");
+      alert("Élève introuvable, peut-être déjà supprimé.");
       return;
     }
     const student = allStudents.value[studentIndex];
 
-    // push into justifications store
     const record = {
       studentName: student.name,
       promo: student.promo,
@@ -310,20 +315,16 @@ function onJustificationChange(event, id) {
     justifications.value.push(record);
     saveJustifications();
 
-    // remove the student from list (as requested)
     allStudents.value.splice(studentIndex, 1);
-    // reassign ids sequentially
     allStudents.value = allStudents.value.map((s, idx) => ({ ...s, id: idx + 1 }));
     saveToStorage();
 
-    // clear file input value so same file can be reuploaded later if necessary
     event.target.value = "";
 
-    alert(`Justificatif importé et élève supprimé : ${student.name}`);
+    alert(`Justificatif ajouté et élève supprimé : ${student.name}`);
   };
 
-  reader.onerror = (err) => {
-    console.error("Erreur lecture justificatif :", err);
+  reader.onerror = () => {
     alert("Impossible de lire le fichier justificatif.");
   };
 
@@ -331,8 +332,7 @@ function onJustificationChange(event, id) {
 }
 
 const modifyStudent = (id) => {
-  console.log(`Demande de modification pour l'élève ${id}`);
-  alert("Fonction modifier non implémentée (à ajouter selon besoins).");
+  alert("Modification des élèves non implémentée pour l'instant.");
 };
 
 const deleteStudent = (id) => {
@@ -348,13 +348,16 @@ const home = () => {
 };
 </script>
 
+
+<style scoped>
+</style>
+
 <style scoped>
 .logo {
   width: 60px;
   height: auto;
   border-radius: 12px;
-  margin: 12px 10px 12px 0;
-  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
+  margin: 10px;
 }
 
 .navbar {
