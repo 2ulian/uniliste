@@ -81,6 +81,11 @@ struct TeacherCsv {
     numero_ressources: String,
 }
 
+#[derive(Debug, Deserialize)]
+struct ResourceCsv {
+    id: String,
+    nom_de_matiere: String,
+}
 
 
 
@@ -139,6 +144,26 @@ async fn import_teachers(collection: Collection<Document>, path: &Path) -> Resul
     }
 
     println!("{count} professeurs importés/mis à jour !");
+    Ok(())
+}
+
+async fn import_resources(collection: Collection<Document>, path: &Path) -> Result<()> {
+    println!("📙 Import des ressources depuis {}", path.display());
+    let mut rdr = ReaderBuilder::new().trim(csv::Trim::All).from_path(path)?;
+    let mut count = 0;
+
+    for rec in rdr.deserialize::<ResourceCsv>() {
+        let rec = rec.context("Erreur de parsing CSV ressource")?;
+        let doc = doc! {
+            "_id": rec.id.trim(),
+            "nom_de_matiere": rec.nom_de_matiere.trim(),
+        };
+
+        upsert_doc(&collection, Bson::String(rec.id.trim().to_string()), doc).await?;
+        count += 1;
+    }
+
+    println!("✅ {count} ressources importées/mises à jour !");
     Ok(())
 }
 
