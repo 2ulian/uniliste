@@ -32,20 +32,16 @@
         <span>Action</span>
       </div>
 
-      <div v-for="student in filteredStudents" :key="student.id" class="student-item">
+      <div v-for="student in allStudents" class="student-item">
         <span>{{ student.name }}</span>
         <span>{{ student.promo }}</span>
         <span>{{ student.group }}</span>
-        <span>{{ student.aménagement }}</span>
+        <span>{{ student.amenagement }}</span>
         <div class="actions-cell">
           <button class="btn-modify" @click="modifyStudent(student.id)">Modifier</button>
           <button class="btn-delete" @click="deleteStudent(student.id)">Supprimer</button>
         </div>
       </div>
-
-      <p v-if="filteredStudents.length === 0" class="no-results">
-        Aucun élève ne correspond aux filtres sélectionnés.
-      </p>
     </div>
   </main>
 </template>
@@ -57,10 +53,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const fileInput = ref(null);
-const selectedPromo = ref("");
-const selectedTD = ref("");
-const selectedTP = ref("");
-const STORAGE_KEY = "studentsList_v1";
+const STORAGE_KEY = "studentsList";
 
 const allStudents = ref([]);
 
@@ -74,20 +67,6 @@ onMounted(() => {
       }
     } catch (e) {}
   }
-});
-
-const filteredStudents = computed(() => {
-  let students = allStudents.value.slice();
-  if (selectedPromo.value) {
-    students = students.filter((s) => s.promo === selectedPromo.value);
-  }
-  if (selectedTD.value) {
-    students = students.filter((s) => s.group.startsWith(selectedTD.value));
-  }
-  if (selectedTP.value) {
-    students = students.filter((s) => s.group === selectedTP.value);
-  }
-  return students;
 });
 
 const openExplorer = () => {
@@ -116,11 +95,10 @@ const splitCommaAware = (line) => {
 
 function mapHeaderIndex(headerArr) {
   const norm = (s) =>
-    s
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/\s+/g, "");
+    s.toLowerCase()
+     .normalize("NFD")
+     .replace(/[\u0300-\u036f]/g, "")
+     .replace(/\s+/g, "");
   const h = headerArr.map((hd) => norm(normalizeCell(hd)));
   return {
     nom: h.indexOf("nom"),
@@ -130,6 +108,7 @@ function mapHeaderIndex(headerArr) {
     promo: h.indexOf("promo"),
     groupe: h.indexOf("groupe"),
     group: h.indexOf("group"),
+    amenagement: h.indexOf("amenagement"),
   };
 }
 
@@ -139,6 +118,7 @@ function parseCSVText(text) {
     .map((l) => l.trim())
     .filter((l) => l !== "");
   if (lines.length === 0) return [];
+
   const headerLine = lines[0];
   const headerCols = splitCommaAware(headerLine);
   const mapIdx = mapHeaderIndex(headerCols);
@@ -163,23 +143,24 @@ function parseCSVText(text) {
       name = normalizeCell(cols[0] || "");
     }
 
-    const promoIdx = mapIdx.promo;
-    const promo = promoIdx !== -1 ? normalizeCell(cols[promoIdx] || "") : "";
-
-    const groupeIdx =
-      mapIdx.groupe !== -1
-        ? mapIdx.groupe
-        : mapIdx.group !== -1
-        ? mapIdx.group
-        : -1;
-
-    const group = groupeIdx !== -1 ? normalizeCell(cols[groupeIdx] || "") : "";
-
     if (name) {
+      const promo = mapIdx.promo !== -1 ? normalizeCell(cols[mapIdx.promo]) : "";
+      const group =
+        mapIdx.groupe !== -1
+          ? normalizeCell(cols[mapIdx.groupe])
+          : mapIdx.group !== -1
+          ? normalizeCell(cols[mapIdx.group])
+          : "";
+      const amenagement =
+        mapIdx.amenagement !== -1
+          ? normalizeCell(cols[mapIdx.amenagement])
+          : "";
+
       rows.push({
         name,
         promo,
         group,
+        amenagement,
       });
     }
   }
@@ -189,6 +170,7 @@ function parseCSVText(text) {
     id: idx + 1,
   }));
 }
+
 
 function readFileAsTextWithEncoding(file, encoding = "utf-8") {
   return new Promise((resolve, reject) => {
@@ -226,7 +208,7 @@ async function onFileChange(event) {
 
     if (imported.length === 0) {
       alert(
-        "Aucune ligne trouvée dans le CSV ou format non reconnu. Vérifie que le CSV contient l'entête : Nom;Prénom;Promo;Groupe"
+        "Aucune ligne trouvée dans le CSV ou format non reconnu. Vérifiez que le CSV contient l'entête : Nom;Prénom;Promo;Groupe"
       );
       return;
     }
@@ -239,7 +221,7 @@ async function onFileChange(event) {
     }
   } catch (err) {
     alert(
-      "Erreur lors de la lecture du fichier. Vérifie l'encodage et le format (Format attendu : séparateur ;)"
+      "Erreur lors de la lecture du fichier. Vérifiez l'encodage et le format avec des separateur en ;)"
     );
   }
 }
@@ -256,9 +238,6 @@ const deleteStudent = (id) => {
   saveToStorage();
 };
 
-const home = () => {
-  router.push("/first");
-};
 </script>
 
 <style scoped>
@@ -273,8 +252,7 @@ const home = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #791919;
-  overflow: hidden;
+  background-color: #7a1919;
   font-family: 'Plus Jakarta Sans', sans-serif;
   padding: 0 5%;
   box-shadow: 0 2px 8px rgba(86, 0, 0, 0.15);
@@ -366,12 +344,12 @@ h1 {
 .student-list-header {
   display: grid;
   grid-template-columns: 2.5fr 1fr 1fr 1.5fr 1.5fr;
-  gap: 15px;
-  padding: 10px 20px;
+  gap: 20px;
+  padding: 14px 24px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   color: #555;
-  border-bottom: 2px solid #ffdfdf;
+  border-bottom: 3px solid #ffdfdf;
   background-color: #ffe5e5;
   border-radius: 12px;
 }
@@ -379,14 +357,19 @@ h1 {
 .student-item {
   display: grid;
   grid-template-columns: 2.5fr 1fr 1fr 1.5fr 1.5fr;
-  gap: 15px;
+  gap: 20px;
   align-items: center;
   background-color: #fff5f5;
-  border-radius: 15px;
-  padding: 15px 20px;
-  box-shadow: 0 2px 4px rgba(255, 130, 130, 0.35);
+  border-radius: 18px;
+  padding: 18px 24px;
+  box-shadow: 0 3px 8px rgba(255, 130, 130, 0.35);
   font-weight: 500;
-  font-size: 15px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+.student-item:hover {
+  background-color: #ffdada;
+  box-shadow: 0 6px 15px rgba(255, 110, 110, 0.5);
 }
 
 .student-item span:first-child {
@@ -395,38 +378,42 @@ h1 {
 
 .actions-cell {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
-
 .btn-modify,
 .btn-delete {
   border: none;
-  border-radius: 10px;
-  padding: 8px 16px;
+  border-radius: 12px;
+  padding: 9px 18px;
   color: white;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 13px;
-  transition: opacity 0.2s;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background-color 0.3s ease, opacity 0.2s ease;
+  user-select: none;
 }
 
 .btn-modify {
-  background-color: #791919;
+  background-color: #7a1919;
 }
 
 .btn-delete {
   background-color: #d93030;
 }
 
-.btn-modify:hover,
+.btn-modify:hover {
+  background-color: #5e1212;
+}
+
 .btn-delete:hover {
-  opacity: 0.8;
+  background-color: #b22222;
 }
 
 .no-results {
   text-align: center;
   color: #777;
-  padding: 20px;
+  padding: 24px;
   font-style: italic;
+  font-size: 16px;
 }
 </style>

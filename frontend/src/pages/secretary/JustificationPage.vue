@@ -519,35 +519,6 @@ select:focus {
   justify-content: flex-end;
 }
 
-.btn-modify,
-.btn-delete {
-  border: none;
-  border-radius: 12px;
-  padding: 9px 18px;
-  color: white;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 14px;
-  transition: background-color 0.3s ease, opacity 0.2s ease;
-  user-select: none;
-}
-
-.btn-modify {
-  background-color: #7a1919;
-}
-
-.btn-delete {
-  background-color: #d93030;
-}
-
-.btn-modify:hover {
-  background-color: #5e1212;
-}
-
-.btn-delete:hover {
-  background-color: #b22222;
-}
-
 .custom-file-upload {
   border: none;
   padding: 12px 20px;
@@ -575,57 +546,4 @@ select:focus {
   font-style: italic;
   font-size: 16px;
 }
-
-@media (max-width: 768px) {
-  .student-list-header,
-  .student-item {
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    font-size: 14px;
-    gap: 12px;
-    padding: 14px 16px;
-  }
-
-  .filters-container {
-    gap: 14px;
-  }
-
-  select {
-    min-width: 200px;
-    padding: 12px 18px;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .student-list-header,
-  .student-item {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 8px;
-    padding: 12px 14px;
-  }
-
-  .student-list-header > *:nth-child(3),
-  .student-list-header > *:nth-child(4),
-  .student-item > *:nth-child(3),
-  .actions-cell {
-    display: none;
-  }
-
-  .actions-cell {
-    justify-content: flex-start;
-  }
-
-  .filters-container {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  select {
-    min-width: 100%;
-    padding: 12px 18px;
-    font-size: 14px;
-  }
-}
-
 </style>
