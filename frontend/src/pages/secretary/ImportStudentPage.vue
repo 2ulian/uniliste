@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar">
-    <img src="../assets/unilim.png" alt="Logo" class="logo" />
+    <img src="../../assets/unilim.png" alt="Logo" class="logo" />
     <ul>
       <li><router-link to="/first" class="nav-links">Menu</router-link></li>
       <li><router-link to="/annee" class="nav-links">Annee Universitaire</router-link></li>
@@ -13,14 +13,10 @@
   </nav>
 
   <main class="student-list-container">
-    <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;">
+    <div class="header-bar">
       <h1>Liste des élèves</h1>
       <div>
-        <button
-          class="custom-file-upload btn-modify"
-          @click="openExplorer"
-          style="background:#791919; color:white;"
-        >
+        <button class="custom-file-upload btn-modify import-btn" @click="openExplorer">
           📂 Importer un fichier CSV
         </button>
         <input ref="fileInput" type="file" @change="onFileChange" accept=".csv" hidden />
@@ -32,18 +28,15 @@
         <span>Nom / Prénom</span>
         <span>Promo</span>
         <span>Groupe</span>
-        <span></span>
+        <span>Aménagement</span>
+        <span>Action</span>
       </div>
 
-      <div
-        v-for="student in filteredStudents"
-        :key="student.id"
-        class="student-item"
-      >
+      <div v-for="student in filteredStudents" :key="student.id" class="student-item">
         <span>{{ student.name }}</span>
         <span>{{ student.promo }}</span>
         <span>{{ student.group }}</span>
-
+        <span>{{ student.aménagement }}</span>
         <div class="actions-cell">
           <button class="btn-modify" @click="modifyStudent(student.id)">Modifier</button>
           <button class="btn-delete" @click="deleteStudent(student.id)">Supprimer</button>
@@ -267,26 +260,24 @@ const home = () => {
   router.push("/first");
 };
 </script>
+
 <style scoped>
 .logo {
   width: 60px;
   height: auto;
-  border-radius: 12px;
-  margin: 12px 10px;
-  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
+  border-radius: 10px;
+  margin: 10px;
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #7a1919;
+  background-color: #791919;
+  overflow: hidden;
   font-family: 'Plus Jakarta Sans', sans-serif;
   padding: 0 5%;
-  box-shadow: 0 3px 10px rgba(120, 0, 0, 0.3);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(86, 0, 0, 0.15);
 }
 
 .navbar ul {
@@ -297,45 +288,45 @@ const home = () => {
 }
 
 .navbar ul li a {
-  color: #fff;
-  padding: 22px 20px;
+  color: white;
+  padding: 24px 18px;
+  text-decoration: none;
   font-weight: 600;
+  display: block;
   font-size: 15px;
   text-transform: capitalize;
-  text-decoration: none;
-  display: block;
   position: relative;
   transition: color 0.3s ease;
-  border-radius: 6px;
 }
 
 .navbar ul li a::after {
   content: '';
   position: absolute;
-  bottom: 16px;
+  bottom: 18px;
   left: 50%;
   width: 0;
   height: 3px;
   background: #ffc2c2;
   transform: translateX(-50%);
   transition: width 0.3s ease-in-out;
-  border-radius: 2px;
 }
 
 .navbar ul li a:hover {
   color: #ffc2c2;
-  background-color: rgba(255, 194, 194, 0.15);
+  background-color: transparent;
 }
 
-.navbar ul li a:hover::after,
-.navbar ul li a.router-link-exact-active::after {
+.navbar ul li a:hover::after {
   width: 70%;
 }
 
 .navbar ul li a.router-link-exact-active {
   color: #ffc2c2;
   font-weight: 700;
-  background-color: rgba(255, 194, 194, 0.25);
+}
+
+.navbar ul li a.router-link-exact-active::after {
+  width: 70%;
 }
 
 .student-list-container {
@@ -346,82 +337,56 @@ const home = () => {
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.import-btn {
+  background: #791919;
+  color: white;
+}
+
 h1 {
   text-align: center;
   font-weight: 700;
-  font-size: 2.8rem;
-  margin-bottom: 25px;
-  letter-spacing: 1px;
-}
-
-.filters-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
+  font-size: 2.5rem;
   margin-bottom: 40px;
-}
-
-select {
-  background-color: #fff5f5;
-  border-radius: 25px;
-  padding: 14px 22px;
-  font-family: inherit;
-  color: #791919;
-  font-size: 15px;
-  min-width: 280px;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 0.3s ease;
-}
-
-select option[value=""] {
-  color: #a9a9a9;
-}
-
-select:focus {
-  background-color: #ffffff;
-  border-color: #ff7b7b;
-  outline: none;
-  box-shadow: 0 0 6px 3px rgba(255, 123, 123, 0.3);
 }
 
 .student-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .student-list-header {
   display: grid;
-  grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
-  gap: 20px;
-  padding: 14px 24px;
+  grid-template-columns: 2.5fr 1fr 1fr 1.5fr 1.5fr;
+  gap: 15px;
+  padding: 10px 20px;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
   color: #555;
-  border-bottom: 3px solid #ffdfdf;
+  border-bottom: 2px solid #ffdfdf;
   background-color: #ffe5e5;
   border-radius: 12px;
 }
 
 .student-item {
   display: grid;
-  grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
-  gap: 20px;
+  grid-template-columns: 2.5fr 1fr 1fr 1.5fr 1.5fr;
+  gap: 15px;
   align-items: center;
   background-color: #fff5f5;
-  border-radius: 18px;
-  padding: 18px 24px;
-  box-shadow: 0 3px 8px rgba(255, 130, 130, 0.35);
+  border-radius: 15px;
+  padding: 15px 20px;
+  box-shadow: 0 2px 4px rgba(255, 130, 130, 0.35);
   font-weight: 500;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.student-item:hover {
-  background-color: #ffdada;
-  box-shadow: 0 6px 15px rgba(255, 110, 110, 0.5);
+  font-size: 15px;
 }
 
 .student-item span:first-child {
@@ -430,117 +395,38 @@ select:focus {
 
 .actions-cell {
   display: flex;
-  gap: 12px;
-  justify-content: flex-end;
+  gap: 10px;
 }
 
 .btn-modify,
 .btn-delete {
   border: none;
-  border-radius: 12px;
-  padding: 9px 18px;
+  border-radius: 10px;
+  padding: 8px 16px;
   color: white;
   cursor: pointer;
-  font-weight: 700;
-  font-size: 14px;
-  transition: background-color 0.3s ease, opacity 0.2s ease;
-  user-select: none;
+  font-weight: bold;
+  font-size: 13px;
+  transition: opacity 0.2s;
 }
 
 .btn-modify {
-  background-color: #7a1919;
+  background-color: #791919;
 }
 
 .btn-delete {
   background-color: #d93030;
 }
 
-.btn-modify:hover {
-  background-color: #5e1212;
-}
-
+.btn-modify:hover,
 .btn-delete:hover {
-  background-color: #b22222;
-}
-
-.custom-file-upload {
-  border: none;
-  padding: 12px 20px;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: #791919;
-  color: white;
-  transition: background-color 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.custom-file-upload:hover {
-  background-color: #5c1212;
+  opacity: 0.8;
 }
 
 .no-results {
   text-align: center;
   color: #777;
-  padding: 24px;
+  padding: 20px;
   font-style: italic;
-  font-size: 16px;
-}
-
-@media (max-width: 768px) {
-  .student-list-header,
-  .student-item {
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    font-size: 14px;
-    gap: 12px;
-    padding: 14px 16px;
-  }
-
-  .filters-container {
-    gap: 14px;
-  }
-
-  select {
-    min-width: 200px;
-    padding: 12px 18px;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .student-list-header,
-  .student-item {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 8px;
-    padding: 12px 14px;
-  }
-
-  .student-list-header > *:nth-child(3),
-  .student-list-header > *:nth-child(4),
-  .student-item > *:nth-child(3),
-  .actions-cell {
-    display: none;
-  }
-
-  .actions-cell {
-    justify-content: flex-start;
-  }
-
-  .filters-container {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  select {
-    min-width: 100%;
-    padding: 12px 18px;
-    font-size: 14px;
-  }
 }
 </style>
-

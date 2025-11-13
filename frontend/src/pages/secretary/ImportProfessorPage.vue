@@ -1,7 +1,7 @@
 <template>
 
     <head class="navbar">
-        <img src="../assets/unilim.png" alt="Logo" class="logo" />
+        <img src="../../assets/unilim.png" alt="Logo" class="logo" />
         <ul>
             <li><router-link to="/first" id="nav-links">Menu</router-link></li>
             <li><router-link to="/annee" id="nav-links">Annee Universitaire</router-link></li>
@@ -57,16 +57,16 @@ export default {
   width: 60px;
   height: auto; 
   border-radius: 10px;
-  margin: 10px ;
+  margin: 10px;
 }
 
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Sépare logo et liens */
+  justify-content: space-between;
   background-color: #791919;
-  padding: 0 5%; /* Espace sur les côtés */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Ombre moderne */
+  padding: 0 5%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
@@ -85,40 +85,37 @@ export default {
   text-transform: capitalize;
   padding: 24px 18px;
   display: block;
-  position: relative; /* Nécessaire pour l'animation ::after */
+  position: relative;
   transition: color 0.3s ease;
 }
 
-/* Ligne animée */
 .navbar li a::after {
   content: '';
   position: absolute;
-  bottom: 18px; /* Position de la ligne */
+  bottom: 18px;
   left: 50%;
-  width: 0; /* Largeur de 0 au repos */
+  width: 0;
   height: 3px;
   background: #ffc2c2;
   transform: translateX(-50%);
   transition: width 0.3s ease-in-out;
 }
 
-/* Effet au survol */
 .navbar li a:hover {
   color: #ffc2c2;
 }
 
 .navbar li a:hover::after {
-  width: 70%; /* La ligne grandit au survol */
+  width: 70%;
 }
 
-/* Effet sur le lien actif */
 .navbar li a.router-link-exact-active {
   color: #ffc2c2;
   font-weight: 700;
 }
 
 .navbar li a.router-link-exact-active::after {
-  width: 70%; /* La ligne est visible sur la page active */
+  width: 70%;
 }
 
 #importation {
@@ -130,5 +127,11 @@ export default {
   border-radius: 1rem;
   width: 500px;
   height: 400px;
+}
+
+input[type="file"] {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  color: #791919;
 }
 </style>
