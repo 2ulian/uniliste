@@ -87,6 +87,12 @@ struct ResourceCsv {
     nom_de_matiere: String,
 }
 
+#[derive(Debug, Deserialize)]
+struct SecretaryCsv {
+    nom: String,
+    prenom: String,
+}
+
 
 
 async fn import_students(collection: Collection<Document>, path: &Path) -> Result<()> {
@@ -182,6 +188,35 @@ pub async fn run_import(args: Args) -> Result<()> {
         _ => eprintln!(" Collection inconnue : {}", args.collection),
     }
 
+    Ok(())
+}
+
+async fn import_secretaries(collection: Collection<Document>, path: &Path) -> Result<()> {
+    println!("📕 Import des secrétaires depuis {}", path.display());
+    let mut rdr = ReaderBuilder::new().trim(csv::Trim::All).from_path(path)?;
+    let mut count = 0;
+
+    for rec in rdr.deserialize::<SecretaryCsv>() {
+        let rec = rec.context("Erreur de parsing CSV secrétaire")?;
+
+        // Génère un ID lisible et stable : nom_prenom en minuscules
+        let id_str = format!(
+            "{}_{}",
+            rec.nom.trim().to_lowercase(),
+            rec.prenom.trim().to_lowercase()
+        );
+
+        let doc = doc! {
+            "_id": id_str.clone(),
+            "nom": rec.nom.trim(),
+            "prenom": rec.prenom.trim(),
+        };
+
+        upsert_doc(&collection, Bson::String(id_str), doc).await?;
+        count += 1;
+    }
+
+    println!("✅ {count} secrétaires importées/mises à jour !");
     Ok(())
 }
 
