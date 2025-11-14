@@ -12,6 +12,9 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 tower-http = { version = "0.5", features = ["cors", "trace"] }
 anyhow = "1.0"
-
+bson = "2.0"
+mongodb = "3.0"
+csv = "1"
+clap = { version = "4", features = ["derive"] }
 
 
