@@ -16,6 +16,10 @@ import CoursPage from "../pages/CoursPage.vue";
 import CMPage from "../pages/CMPage.vue";
 import RessourcePage from "../pages/RessourcePage.vue";
 import AboutPage from "../pages/AboutPage.vue";
+import CallSheet from "../pages/professor/Callsheet.vue";
+import StaffList from "../pages/professor/StaffList.vue";
+import StudentList from "../pages/professor/StudentList.vue";
+
 
 const routes = [
   { path: "/", component: LoginPage },
@@ -27,6 +31,10 @@ const routes = [
   {path: "/professor", component: ImportProfessorPage },
   {path: "/ressources", component: ImportRessourcesPage },
   {path: "/justification", component: JustificationPage },
+  {path: "/callsheet", component: CallSheet},
+  {path: "/stafflist", component: StaffList},
+  {path: "/studentlist", component: StudentList},
+  
 
   {path: "/prof", component: ProfessorFirstPage },
   { path: "/groups", component: GroupPage },
